@@ -1,0 +1,43 @@
+These are cheats available in the Registered Version of HYPERCYCLES 1.0
+  (They do not work in the Sharware Version)
+
+ - A NEW GAME or LOAD GAME must be in progress.
+
+ - Press ESC to bring up main menu.
+
+ - Type the letter codes listed below for the desired effect.
+
+ - If you have digital sound on, a musical flourish will indicate that
+   the code was accepted.
+ 
+ - Press ESC to return to game action.
+
+
+ AHCRP
+   Power up power & shield levels.
+
+ AHCRE
+   Obtain a new piece of equipment for your HYPERCYCLES. Keep doing
+   this cheat to pickup the equipment in the same order that it is 
+   avaiable in the game. You can now get all equipment options in 
+   first level.
+
+ AHCRW
+   Add 500 each of PHOTON, NEUTRON, & DART Missiles to your arsenal.
+   Happy Hunting!
+
+ AHCRO
+   Opens gateway doors immediately.
+
+ AHCRG##
+   Jump to any of the 30 levels. Type in the 5 letter code then two
+   digits to select level. 
+
+   Examples: 
+              AHCRG05   - Selects Level 5
+              AHCRG22   - Selects Level 22
+              AHCRG33   - Will not be accepted because greater than 30 levels
+    
+
+  Have Fun!!!
+

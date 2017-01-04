@@ -1,0 +1,62 @@
+                                        06/15/94
+HYPERCYCLES HINTS AND TIPS
+-------------------------- 
+
+Finding the right speed
+-----------------------
+  The accelerator option for your Hypercycle is located on level 1. Finding
+it quickly and using it is important, especially when your are in higher
+difficulty setting. 
+  Use the up and down arrow keys to adjust to a speed high enough to 
+stay in control but moderate enough to not to get reckless in close
+confinements.
+  When in the clear, slow down to look around. Hold down the Ctrl key
+and press the left or right arrow key to allow a full 360 degree view
+around you.
+  
+Enemy Riders
+------------
+  Go fast enough to be sure to keep the off your back. In higher difficulty
+settings, this is mandatory.
+  If you find yourself going head to head with stay in line with them (yes
+I said stay in line with them) as long as you can then veer away as they 
+close in.
+  You should have better reflexes than most of them, so use that to your
+advantage.
+  If an enemy rider is destroyed, the walls that were created by the rider
+with dissipate and clean open space.
+
+Missile Launching
+-----------------
+The missile launcher is available on level 2 (if you picked the accelerator
+up on level 1). Pick up as many globes as you can to increase the supplies
+of your missiles. You can hold down the CTRL key and press the left and
+right arrow keys to all a 360 degree view. This is great if a enemy rider 
+is close to you, just swing your view around and launch your missiles.
+
+Using the Laser Wall Projector
+------------------------------
+  Once you get this device, your then at least on a level playing field.
+Don't lay walls unless you need to, remember they don't disappear unless 
+you do.
+  One good method is to try use an existing wall and pin (or encircle) an 
+enemy rider against it.
+  In a later level, you can get a Phase Shifter that allows you to pass thru
+the walls you created with harm. 
+
+Saving & Loading Games
+----------------------
+  Saved games will begin at the start of the level when loaded. Meaning you  
+can't save the exact position in the middle of the run of a level. Be sure
+to save after you have completed each level.
+
+Power Level
+-----------
+  Power Packs on your Hypercycle will never go completely dead. If the 
+power level indicator (yellow line in top left corner of screen) show that 
+have very low power your speed will drop.
+  Grab the globes that the saucer drops to help recharge your Hypercycles 
+Power Packs.  The globes will also help recharge your shields and give you
+various types of missiles.
+
+
