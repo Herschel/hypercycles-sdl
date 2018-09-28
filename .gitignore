@@ -3,6 +3,7 @@
 *.ko
 *.obj
 *.elf
+obj/
 
 # Precompiled Headers
 *.gch
@@ -31,3 +32,16 @@
 # Debug files
 *.dSYM/
 *.su
+
+# Solution/project files
+packages/
+packages.config
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+.vs/
+
+# Build artifacts
+bin/Debug
+bin/Release
