@@ -1,22 +1,34 @@
 
 // I N C L U D E S ///////////////////////////////////////////////////////////
+// MIKE
+#include "port_types.h"
 
 #include <io.h>
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <dos.h>
+/* MIKE
 #include <i86.h>
 #include <bios.h>
+*/
 #include <fcntl.h>
+/*
 #include <malloc.h>
+*/
 #include <math.h>
+
 #include <string.h>
+/*
 #include <graph.h>
 #include <process.h>
 #include "h3d_gfx.h"  // load our graphics library
+*/
 #include "trig.h"
 #include "fixpoint.h"
+
+// MIKE
+void Display_Text(int x, int y, char *txt, int color);
 
 #define UCHAR unsigned char
 #define SHORT short int
@@ -137,6 +149,7 @@ extern struct pic_def
   int            ratio;
 } picture[192];
 
+#pragma pack(1)
 struct level_def_struc
 {
     unsigned char       level_type;
@@ -163,7 +176,9 @@ struct level_def_struc
     int                  opt1,opt2,opt3,opt4,opt5,opt6,opt7,opt8;
     
 } level_def;
+#pragma pack()
 
+#pragma pack(1)
 struct obj_def
 {
   int            level_num;
@@ -176,6 +191,7 @@ struct obj_def
   int            status;
   int            opt1, opt2, opt3, opt4;
 } object[152];
+#pragma pack()
 
 struct obj_def single;
 
@@ -451,6 +467,9 @@ int load_config()
   FILE *fp1;
   
   fp1 = fopen("HYPER.CFG","rb" );
+
+  // MIKE:
+  return 1;
 
   if(fp1 == NULL) return(0);
   fread( &hc_setup, sizeof( hc_setup ), 1, fp1);
@@ -1241,6 +1260,10 @@ void linedraw(int x1,int y1,int x2,int y2,int color,unsigned char far *screen)
 
 void Timer(int clicks)
 {
+	// MIKE:
+	printf("Timer %d\n", clicks);
+	return 0;
+
   // this function uses the internal time keeper timer i.e. the one that goes
   // at 18.2 clicks/sec to to a time delay.  You can find a 32 bit value of
   // this timer at 0000:046Ch
@@ -1266,16 +1289,19 @@ void Timer(int clicks)
 
 unsigned int timerval()
 {
+	// MIKE:
+	return SDL_GetTicks() / 55;
+
   // this function uses the internal time keeper timer i.e. the one that goes
   // at 18.2 clicks/sec to to a time delay.  You can find a 32 bit value of
   // this timer at 0000:046Ch
 
-  unsigned int now;
+  //unsigned int now;
 
-  // get current time
+  //// get current time
 
-  now = *clockr;
-  return now;
+  //now = *clockr;
+  //return now;
 
 }
 
@@ -2034,7 +2060,7 @@ void list_levels()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-
+extern int sdl_key;
 void _interrupt _far New_Key_Int(void)
 {
   // this function links into the keyboard interrupt and takes over. Called
@@ -2044,13 +2070,14 @@ void _interrupt _far New_Key_Int(void)
   int r1; 
 
   // replacement for inline asm
-  _enable();
+  /*_enable();
   raw_key=inp(KEY_BUFFER);
   r1=inp(KEY_CONTROL) | 0x82;
   outp(KEY_CONTROL, r1);
   r1=r1 & 0x7f;
   outp(KEY_CONTROL, r1);
-  outp(INT_CONTROL, 0x20);
+  outp(INT_CONTROL, 0x20);*/
+  raw_key = sdl_key;
   
   // now for some C to update the arrow state table
   // process the key and update the table (only if not in demo mode)
@@ -2383,6 +2410,8 @@ void Render_Sliver( int pic_num, int scale, int column, int sl_col)
   // compute offset of sprite in video buffer >>  offset=st*320+column;
   bufptr=double_buffer_c+(st2 << 8) + (st2 << 6) + column;
   
+  // MIKE: Verify that pic_num is valid.
+
   for (yy=sl_start; yy<stemp; yy++)
   {
     work_offset=(scale_sum & 0xffffffc0) + sl_col;    //work_offset is the row in 64x64 grid
@@ -2636,7 +2665,9 @@ void Texture_Load()
       {
         b = level_def.tile1_assign[a] - 'a' + 26;
         Grap_Bitmap(128,b   ,  x,  y, 64, 64);
-        picture[b+13].image = picture[b].image;
+        // MIKE: picture[b+13].image = picture[b].image;
+		picture[b + 13].image = malloc(picture[b].width*picture[b].height + 1);
+		memcpy(picture[b + 13].image, picture[b].image, picture[b].width*picture[b].height + 1);
         picture[b+13].width = picture[b].width;
         picture[b+13].height= picture[b].height;
         picture[b+13].ratio = picture[b].ratio;
@@ -6356,6 +6387,7 @@ int menu1(int ck)
     e=0;
     while(!e)
     {
+		delay(16);
        if(!ck && timerval()>tmr9)
        {
          if(!mn1_flap) curr=138; 
@@ -6804,7 +6836,7 @@ int difflvl()
            music_cnt=4;
          }  
       }
-
+	   delay(16); // MIKE
     }
   }
   return(0);
@@ -7379,27 +7411,28 @@ void mcp1()
   char t2_buf[50]; //,t3_buf[40];
   // S E C T I O N   1 /////////////////////////////////////////////////////
 
-  int done,mainloop=0;            // flags to exit loops & game
+  int done=0,mainloop=0;            // flags to exit loops & game
   master_control=1;
 
 
   game_setup(); // Will only run once at game boot
 
-  if(!speed_ck_flag) 
-  {
-    a=speed_adjust();
-    menu_mode=1;
-    new_key=0;
-    if(debug_flag)
-    {
-      while(!new_key) _enable();
-    }
-    if(!a) 
-    {
-      mainloop++;
-      goto All_Done; 
-    }
-  }
+  // MIKE:???
+  //if(!speed_ck_flag) 
+  //{
+  //  a=speed_adjust();
+  //  menu_mode=1;
+  //  new_key=0;
+  //  if(debug_flag)
+  //  {
+  //    while(!new_key) _enable();
+  //  }
+  //  if(!a) 
+  //  {
+  //    mainloop++;
+  //    goto All_Done; 
+  //  }
+  //}
   new_key=0;
   
   //printf("Opening Screen Suppressed \n \n");      
@@ -8229,6 +8262,7 @@ void mcp1()
       }
 
       if(system_delay) delay(system_delay);
+	  delay(16); // MIKE
 
 All_Done: ;   
       
@@ -8263,7 +8297,8 @@ int cmd_line()
 {
   unsigned char cl[260],ch;
   int a,b=0;
-  strcpy(cl, getcmd(cl));
+  const char* src = "";// getcmd(cl);
+  strcpy(cl, src);
   a=0;
   while(cl[a])
   {
@@ -8304,15 +8339,21 @@ int cmd_line()
 
 // M A I N ///////////////////////////////////////////////////////////////
 
-void main(void)
+void main_hyper6(void)
 {
   int a;
 
 
-  equip = (unsigned int *) 0x00000410; // pointer to bios equip
-  clockr= (unsigned int *) 0x0000046C; // pointer to internal
-  vga_ram= (unsigned int *) 0x000a0000; // points to vga ram
-  vga_ram_c= (unsigned char *) 0x000a0000; // points to vga ram
+  // MIKE:
+  equip = malloc(0x5C);// pointer to bios equip
+  clockr = malloc(0x100); // pointer to internal
+  vga_ram = malloc(0xFFFF); // points to vga ram
+  vga_ram_c = (unsigned char *)vga_ram; // points to vga ram
+
+  //equip = (unsigned int *) 0x00000410; // pointer to bios equip
+  //clockr= (unsigned int *) 0x0000046C; // pointer to internal
+  //vga_ram= (unsigned int *) 0x000a0000; // points to vga ram
+  //vga_ram_c= (unsigned char *) 0x000a0000; // points to vga ram
 
   printf("\n   HYPERCYCLES(tm) V.99  Copyright 1995  Aclypse Corporation\n");
   printf("\n   HYPERCYCLES & ACLYPSE are Trademarks of Aclypse Corporation\n");

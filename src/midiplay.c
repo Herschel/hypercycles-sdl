@@ -96,6 +96,9 @@ Midi_Init()
 Midi_Play (dataPtr)
    UCHAR *dataPtr;
 {
+	// MIKE TODO:
+	return 0;
+
    //if (!clock_in) return (0);
    SetUp_Data (dataPtr);
    Start_Melo ();

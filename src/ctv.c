@@ -1,3 +1,6 @@
+// MIKE:
+#include "port_types.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <io.h>
@@ -6,7 +9,7 @@
 #include <malloc.h>
 #include <fcntl.h>
 #include <string.h>
-#include <i86.h>
+// MIKE: #include <i86.h>
 
 //#define  WAIT_TIME                    0x0200
 #define  WAIT_TIME                    0x0800
@@ -82,48 +85,58 @@ void _interrupt _far Dummy_DMA_Int5(void);
 void _interrupt _far Dummy_DMA_Int7(void);
 void _interrupt _far DMA_Out_Intr(void);
 
-
+void Write_DSP(int, int);
 
 void FM_Delay()
 {
-  int a;
+	// MIKE:
+	printf("FM_Delay\n");
+  /*int a;
   a=inp(io_addr+8);
   a=inp(io_addr+8);
   a=inp(io_addr+8);
   a=inp(io_addr+8);
-  a=inp(io_addr+8);
+  a=inp(io_addr+8);*/
 }
  
 void Write_FM( int data1)
 {
-  outp(io_addr+8, (data1 & 0xff));
-  FM_Delay();
-  outp(io_addr+9, (data1 >> 8) );
-  FM_Delay();
+	// MIKE:
+	printf("Write_FM %d\n", data1);
+  //outp(io_addr+8, (data1 & 0xff));
+  //FM_Delay();
+  //outp(io_addr+9, (data1 >> 8) );
+  //FM_Delay();
 }
 
 int Write_DSP_Time( int port, int data5)
 {
-  int a,c;
+	// MIKE:
+	printf("Write_DSP_Time %d %d\n", port, data5);
+	return 0;
+  //int a,c;
 
-  for( c = 0; c< WAIT_TIME; c++)
-  {
-    a = inp(port);
-    if(a>127) { outp( port, data5); return(0); }
-  }
-  return(1);
+  //for( c = 0; c< WAIT_TIME; c++)
+  //{
+  //  a = inp(port);
+  //  if(a>127) { outp( port, data5); return(0); }
+  //}
+  //return(1);
 }
 
 int Read_DSP_Time()
 {
-  int a,c;
+	// MIKE:
+	printf("Read_DSP_Time\n");
+	return 0;
+  //int a,c;
 
-  for( c = 0; c< WAIT_TIME; c++)
-  {
-    a = inp( io_addr + 14);
-    if( a >127 ) { gl_result = inp( io_addr + 10); return(0); }
-  }
-  return(1);
+  //for( c = 0; c< WAIT_TIME; c++)
+  //{
+  //  a = inp( io_addr + 14);
+  //  if( a >127 ) { gl_result = inp( io_addr + 10); return(0); }
+  //}
+  //return(1);
 }
 
 int Wait_FM_Status( int data5 )
@@ -194,21 +207,22 @@ void _interrupt _far Dummy_DMA_Int7(void)
 
 void End_DMA_Transfer()
 {
-  int a;
-  unsigned char c,d;
-  outp( DMA_MASK_REG, 4 + DMA_Channel);
+  //int a;
+  //unsigned char c,d;
+  //outp( DMA_MASK_REG, 4 + DMA_Channel);
 
-  c = 1 << intr_num;
-  
-  _disable();
-  _dos_setvect( intr_num + 8, Orig_Int);
-  d=inp(0x21);
-  d = d | c;
-  outp(0x21, d);
+  //c = 1 << intr_num;
+  //
+  //_disable();
+  //_dos_setvect( intr_num + 8, Orig_Int);
+  //d=inp(0x21);
+  //d = d | c;
+  //outp(0x21, d);
 
-  CTV_voice_status = 0;
-  a = inp( io_addr + 14);
-  _enable();
+  //CTV_voice_status = 0;
+  //a = inp( io_addr + 14);
+  //_enable();
+	printf("End_DMA_Transfer\n");
 }
 
 void DMA_Out_Transfer()
@@ -246,31 +260,36 @@ extern void cld_asm(void);
 unsigned char aaa;
 void _interrupt _far DMA_Out_Intr(void)
 {
-  // inline asm cld
-  cld_asm();
+	// MIKE:
+  //// inline asm cld
+  //cld_asm();
 
-  dma_var1 = inp( io_addr+14);
-  if( !LEN_L_TO_DMA  ) End_DMA_Transfer();
-  else DMA_Out_Transfer();
-  _enable();
-  outp(0x20,0x20);
+  //dma_var1 = inp( io_addr+14);
+  //if( !LEN_L_TO_DMA  ) End_DMA_Transfer();
+  //else DMA_Out_Transfer();
+  //_enable();
+  //outp(0x20,0x20);
+	printf("DMA_Out_Intr\n");
 }
 
 
 int Reset_DSP()
 {
-  int a,c;
+	// MIKE:
+	printf("Reset_DSP\n");
+	return 2;
+  //int a,c;
 
-  outp( io_addr+6, 1);
-  a = inp(io_addr+6);
-  while(a <= 0xff) a++;
-  outp( io_addr+6, 0);
-  for(c=0;c < 0x20; c++)
-  {
-    a = Read_DSP_Time();
-    if( !a && gl_result == 0xaa) return(0);
-  }
-  return(2); 
+  //outp( io_addr+6, 1);
+  //a = inp(io_addr+6);
+  //while(a <= 0xff) a++;
+  //outp( io_addr+6, 0);
+  //for(c=0;c < 0x20; c++)
+  //{
+  //  a = Read_DSP_Time();
+  //  if( !a && gl_result == 0xaa) return(0);
+  //}
+  //return(2); 
 }
 
 int Verify_IO_Chk()
@@ -291,54 +310,60 @@ int Verify_IO_Chk()
 
 int Verify_Intr()
 {
-  int a, c;
-
-  Orig_Int2 = _dos_getvect( 2 + 8 );
-  _dos_setvect( 2 + 8, Dummy_DMA_Int2 );
-  
-  Orig_Int3 = _dos_getvect( 3 + 8 );
-  _dos_setvect( 3 + 8, Dummy_DMA_Int3 );
-  
-  Orig_Int5 = _dos_getvect( 5 + 8 );
-  _dos_setvect( 5 + 8, Dummy_DMA_Int5 );
-  
-  Orig_Int7 = _dos_getvect( 7 + 8 );
-  _dos_setvect( 7 + 8, Dummy_DMA_Int7 );
-
-  intr_num = 0;
-  Write_DSP( io_addr+12, DSP_INTRQ_CMD );
-  
-  a=0;
-  for(c=0; c<WAIT_TIME*4; c++)
-  {
-    if(intr_num) goto VI90;
-  }
-  a = 3;
-VI90:
-  _dos_setvect( 2 + 8, Orig_Int2);
-  _dos_setvect( 3 + 8, Orig_Int3);
-  _dos_setvect( 5 + 8, Orig_Int5);
-  _dos_setvect( 7 + 8, Orig_Int7);
- return(a);
+//  int a, c;
+//
+//  Orig_Int2 = _dos_getvect( 2 + 8 );
+//  _dos_setvect( 2 + 8, Dummy_DMA_Int2 );
+//  
+//  Orig_Int3 = _dos_getvect( 3 + 8 );
+//  _dos_setvect( 3 + 8, Dummy_DMA_Int3 );
+//  
+//  Orig_Int5 = _dos_getvect( 5 + 8 );
+//  _dos_setvect( 5 + 8, Dummy_DMA_Int5 );
+//  
+//  Orig_Int7 = _dos_getvect( 7 + 8 );
+//  _dos_setvect( 7 + 8, Dummy_DMA_Int7 );
+//
+//  intr_num = 0;
+//  Write_DSP( io_addr+12, DSP_INTRQ_CMD );
+//  
+//  a=0;
+//  for(c=0; c<WAIT_TIME*4; c++)
+//  {
+//    if(intr_num) goto VI90;
+//  }
+//  a = 3;
+//VI90:
+//  _dos_setvect( 2 + 8, Orig_Int2);
+//  _dos_setvect( 3 + 8, Orig_Int3);
+//  _dos_setvect( 5 + 8, Orig_Int5);
+//  _dos_setvect( 7 + 8, Orig_Int7);
+// return(a);
+	printf("Verify_Intr\n");
+	return 0;
 } 
 
 void Write_DSP( int port, int data5)
 {
-  int a;
-wd10:
-  a = inp(port);
-  if(a>127) goto wd10;
-  outp(port, data5);
+	// MIKE:
+	printf("Write_DSP %d %d\n", port, data5);
+//  int a;
+//wd10:
+//  a = inp(port);
+//  if(a>127) goto wd10;
+//  outp(port, data5);
 }
 
 int Read_DSP()
 {
-  int a;
-rd10:
-  a = inp(io_addr+14);
-  if(a>127) goto rd10;
-  a = inp(io_addr+10);
-  return(a);
+	return;
+	printf("Read_DSP\n");
+//  int a;
+//rd10:
+//  a = inp(io_addr+14);
+//  if(a>127) goto rd10;
+//  a = inp(io_addr+10);
+//  return(a);
 }
 
 void ON_OFF_Speaker( int stat2)
@@ -362,18 +387,19 @@ int Chk_DSP_Version()
 
 void Pause_DSP_DMA()
 {
-  int a;
-  a=128;
-  while(a>127)
-  {
-    _enable();  
-    if(!CTV_voice_status) return;
-    _disable();
-    a=inp(io_addr+12);
-  }  
-  a=128;
-  while(a>127) a=inp(io_addr+12);
-  outp(io_addr + 12, DSP_PAUSE_DMA_CMD);  
+  //int a;
+  //a=128;
+  //while(a>127)
+  //{
+  //  _enable();  
+  //  if(!CTV_voice_status) return;
+  //  _disable();
+  //  a=inp(io_addr+12);
+  //}  
+  //a=128;
+  //while(a>127) a=inp(io_addr+12);
+  //outp(io_addr + 12, DSP_PAUSE_DMA_CMD);  
+	printf("Pause_DSP_DMA\n");
 }
 
 void Old_Calc_Addr( unsigned char *addr1)
@@ -553,46 +579,48 @@ int CTV_Init()
 
 int CTV_Output( unsigned char * bufaddr, int count,int sampling )
 {
- int a, b;
- unsigned char c,d;
- 
- if(CTV_voice_status ) return (1);
- 
- Select_DMA_Params();
+ //int a, b;
+ //unsigned char c,d;
+ //
+ //if(CTV_voice_status ) return (1);
+ //
+ //Select_DMA_Params();
 
- CTV_voice_status = 1;
- a = 0xf4240 / sampling;
- b = a & 0xff;
- b = -b;
+ //CTV_voice_status = 1;
+ //a = 0xf4240 / sampling;
+ //b = a & 0xff;
+ //b = -b;
 
- Write_DSP( io_addr+12, DSP_TIME_CMD );
- Write_DSP( io_addr+12, b );
+ //Write_DSP( io_addr+12, DSP_TIME_CMD );
+ //Write_DSP( io_addr+12, b );
 
- c = 1 << intr_num;
- c = ~c;
+ //c = 1 << intr_num;
+ //c = ~c;
 
- _disable();
- Orig_Int = _dos_getvect( intr_num + 8 );
- _dos_setvect( intr_num + 8, DMA_Out_Intr );
+ //_disable();
+ //Orig_Int = _dos_getvect( intr_num + 8 );
+ //_dos_setvect( intr_num + 8, DMA_Out_Intr );
 
-  d=inp(0x21);
-  d = d & c;
-  outp(0x21, d);
+ // d=inp(0x21);
+ // d = d & c;
+ // outp(0x21, d);
 
- // Calculate physical address
- Calc_Addr( bufaddr );
+ //// Calculate physical address
+ //Calc_Addr( bufaddr );
 
- LEN_L_TO_DMA = (count & 0xffff);
- LEN_H_TO_DMA = 0;
+ //LEN_L_TO_DMA = (count & 0xffff);
+ //LEN_H_TO_DMA = 0;
 
- a = DMA_CURRENT_ADDX + count - 1;
- b = ((a >> 16) + DMA_CURRENT_PAGE) & 0xffff;
- LAST_DMA_OFFSET = a;
- PAGE_TO_DMA = b - DMA_CURRENT_PAGE;
- 
- DMA_Out_Transfer();
- _enable();
- return (0);
+ //a = DMA_CURRENT_ADDX + count - 1;
+ //b = ((a >> 16) + DMA_CURRENT_PAGE) & 0xffff;
+ //LAST_DMA_OFFSET = a;
+ //PAGE_TO_DMA = b - DMA_CURRENT_PAGE;
+ //
+ //DMA_Out_Transfer();
+ //_enable();
+ //return (0);
+	printf("CTV_Output %d %d\n", count, sampling);
+	return 0;
 }
 
 int CTV_Halt()
@@ -625,29 +653,33 @@ unsigned int DOS_Mem_Selector;
 
 unsigned char *D32DosMemAlloc( unsigned int sz)
 {
-    union REGS r;
-    r.x.eax = 0x100;
-    r.x.ebx = (sz+15)>>4;
-    int386(0x31, &r, &r);
-    if( r.x.cflag) 
-    {
-      printf("System Error - Could allocate memory for digital sound!\n");
-      printf("               See HELPME.TXT file for solutions.\n\n");
-      exit(0);
-      return((unsigned int) 0);
-    }
-    DOS_Mem_Selector = r.x.edx;
-    return(void *) ((r.x.eax & 0xffff) <<4);
+	// MIKE:
+    //union REGS r;
+    //r.x.eax = 0x100;
+    //r.x.ebx = (sz+15)>>4;
+    //int386(0x31, &r, &r);
+    //if( r.x.cflag) 
+    //{
+    //  printf("System Error - Could allocate memory for digital sound!\n");
+    //  printf("               See HELPME.TXT file for solutions.\n\n");
+    //  exit(0);
+    //  return((unsigned int) 0);
+    //}
+    //DOS_Mem_Selector = r.x.edx;
+    //return(void *) ((r.x.eax & 0xffff) <<4);
+	return NULL;
 }
 
 unsigned int D32DosMemFree()
 {
-    union REGS r;
-    r.x.eax = 0x101;
-    r.x.edx = DOS_Mem_Selector;
-    int386(0x31, &r, &r);
-    if( r.x.cflag) return(0);
-    return(1); //OK
+    //union REGS r;
+    //r.x.eax = 0x101;
+    //r.x.edx = DOS_Mem_Selector;
+    //int386(0x31, &r, &r);
+    //if( r.x.cflag) return(0);
+    //return(1); //OK
+	// MIKE:
+	return 0;
 }
 
 
@@ -658,6 +690,9 @@ void set_vmode( int vmode);
 
 void play_vox(char * fname)
 {
+	// MIKE:
+	return;
+
   int a, length;
   int fp;
 

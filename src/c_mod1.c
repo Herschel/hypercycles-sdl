@@ -3,125 +3,139 @@
 #include    <dos.h>
 #include    <stdio.h>
 #include    <stdlib.h>
-#include    <i86.h>
+// MIKE: #include    <i86.h>
 
 
 
 void set_vmode( int vmode)
 {
-    union REGS  regs;
+    /* MIKE
+	union REGS  regs;
 
     regs.w.ax = vmode;
-    int386( 0x10, &regs, &regs );
+    int386( 0x10, &regs, &regs );*/
+
+	printf("set_vmode %d\n", vmode);
 }
 
 void gotoxy(int row, int column)
 {
-    union REGS regs;
+   // MIKE
+  //  union REGS regs;
 
-    regs.h.dl=column;
-    regs.h.dh=row;
-    regs.h.bh=0;
-    regs.h.ah=2;                    /* BIOS cursor address function */
-    int386(0x10,&regs,&regs);
+  //  regs.h.dl=column;
+  //  regs.h.dh=row;
+  //  regs.h.bh=0;
+  //  regs.h.ah=2;                    /* BIOS cursor address function */
+  //  int386(0x10,&regs,&regs);
+
+	printf("gotoxy (%d, %d)", row, column);
 }
 
 void clrscrn(void)
 {
-    union REGS regs;
+    //union REGS regs;
 
-    regs.h.bh=0;
-    regs.h.ah=8;               /*  get character/attribute under cursor  */
-    int386(0x10,&regs,&regs);
-    regs.h.bh=regs.h.ah;
-    regs.w.cx=0;
-    regs.w.dx=0x314f;
-    regs.w.ax=0x0600;          /*  clear screen by scrolling it  */
-    int386(0x10,&regs,&regs);
-    gotoxy(0,0);
+    //regs.h.bh=0;
+    //regs.h.ah=8;               /*  get character/attribute under cursor  */
+    //int386(0x10,&regs,&regs);
+    //regs.h.bh=regs.h.ah;
+    //regs.w.cx=0;
+    //regs.w.dx=0x314f;
+    //regs.w.ax=0x0600;          /*  clear screen by scrolling it  */
+    //int386(0x10,&regs,&regs);
+    //gotoxy(0,0);
+
+	printf("clrscrn\n");
 }
 
 void dispch(int ch)
 {
-    union REGS regs;
+    /*union REGS regs;
 
     regs.h.ah=2;
     regs.h.dl=ch;
     int386(0x21,&regs,&regs);
+	*/
+	printf("dispch %d\n", ch);
 }
 
 void putchat(int ch, int attr)
 {
-    union REGS regs;
+    //union REGS regs;
 
-    regs.h.al=ch;
-    regs.h.bl=attr;
-    regs.h.bh=0;
-    regs.w.cx=1;
-    regs.h.ah=9;
-    int386(0x10,&regs,&regs);
+    //regs.h.al=ch;
+    //regs.h.bl=attr;
+    //regs.h.bh=0;
+    //regs.w.cx=1;
+    //regs.h.ah=9;
+    //int386(0x10,&regs,&regs);
+	printf("putchat %d %d\n", ch, attr);
 }
 
 void prints( int row, int column, unsigned char *txtstr, int attr )
 {
-    int a=0,b;
+    /*int a=0,b;
     while(txtstr[a])
     {    
       gotoxy(row,column+a);
       b=txtstr[a];
       putchat(b,attr);
       a++;
-    }
+    }*/
+	printf("prints %d %d %s %d\n", row, column, txtstr, attr);
 }  
 
 /*  GETNS.C     - gets a string from the keyboard, limits length  */
 int getns(char *str,int maxchars)
 {
-    int a,count=0;
-    char *p,ch;
+    //int a,count=0;
+    //char *p,ch;
 
-    p=str;
+    //p=str;
 
-    a=0;
-    while(str[a]>0)
-    {
-      a++;
-      p++;
-      putch(str[count]);
-      count++;
-    }   
+    //a=0;
+    //while(str[a]>0)
+    //{
+    //  a++;
+    //  p++;
+    //  putch(str[count]);
+    //  count++;
+    //}   
 
-    for(;;) {
-        ch=getch() & 0xff;     /* get character, no echo */
-        switch(ch) {
-            case 0:                     /* is character extended ASCII code? */
-                ch=getch();
-                if(ch==80) {*p=0; return(0);}                
-                if(ch==72) {*p=0; return(2);}                
-                break;
-            case 27:                   /* is character = Escape? */
-                *p=0;                   /* empty receiving string */
-                return(1);              /* return with error code */
-            case 13:                    /* is character = Enter? */
-                *p=0;                   /* add terminating null */
-                return(0);              /* return normally */
-            case 8:                    /* is character = BackSpace? */
-                if(p!=str) {            /* are we at 1st positon of string? */
-                    dispch(ch);         /* display destructive backspace */
-                    dispch(' ');
-                    dispch(ch);
-                    p--;                /* decrement string pointer */
-                    count--;
-                }
-                break;
-            default:                    /* default is normal character */
-                if(count<maxchars) {    /* make sure not at max length */
-                    *p++=ch;            /* add character to string */
-                    dispch(ch);         /* echo character to screen */
-                    count++;
-                }
-        }
-    }
+    //for(;;) {
+    //    ch=getch() & 0xff;     /* get character, no echo */
+    //    switch(ch) {
+    //        case 0:                     /* is character extended ASCII code? */
+    //            ch=getch();
+    //            if(ch==80) {*p=0; return(0);}                
+    //            if(ch==72) {*p=0; return(2);}                
+    //            break;
+    //        case 27:                   /* is character = Escape? */
+    //            *p=0;                   /* empty receiving string */
+    //            return(1);              /* return with error code */
+    //        case 13:                    /* is character = Enter? */
+    //            *p=0;                   /* add terminating null */
+    //            return(0);              /* return normally */
+    //        case 8:                    /* is character = BackSpace? */
+    //            if(p!=str) {            /* are we at 1st positon of string? */
+    //                dispch(ch);         /* display destructive backspace */
+    //                dispch(' ');
+    //                dispch(ch);
+    //                p--;                /* decrement string pointer */
+    //                count--;
+    //            }
+    //            break;
+    //        default:                    /* default is normal character */
+    //            if(count<maxchars) {    /* make sure not at max length */
+    //                *p++=ch;            /* add character to string */
+    //                dispch(ch);         /* echo character to screen */
+    //                count++;
+    //            }
+    //    }
+    //}
+	printf("getns %d\n", maxchars);
+	return 0;
 }
 /*
 // Shareware Notice

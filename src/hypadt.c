@@ -4,18 +4,22 @@
 #include <stdio.h>
 #include <dos.h>
 #include <conio.h>
+/* MIKE
 #include <i86.h>
+*/
 #include <sys/types.h>
 #include <fcntl.h>
 #include <io.h>
 #include <string.h>
 
+#pragma pack(1)
 struct adt_struc
 {
     unsigned char   fname[15];
     int             start;
     int             length;
 } adt2[85];
+#pragma pack()
 
 struct adt_struc adt1[145];
 
@@ -47,6 +51,7 @@ int adt1_init()
       }
     }
   }
+  // MIKE: Can we verify that we read things correctly?
   fclose(fp1);
   return(0);
 }
@@ -98,6 +103,7 @@ int open_adt1(unsigned char *fname)
       if(!strcmp(fn2,adt1[a].fname)) { b++; break;}
     }
   }
+  // MIKE: Verify that file is found.
   if(!b) return(-1);
   
   GFL1A = adt1[a].length;

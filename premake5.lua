@@ -12,7 +12,8 @@ project "hypercycles"
 
    nuget { "sdl2:2.0.5", "sdl2.redist:2.0.5" }
 
-   files { "src/main.c" }
+   files { "src/*.c", "src/*.h" }
+   excludes { "src/build1.c" }
 
    filter "configurations:debug"
       defines { "DEBUG" }

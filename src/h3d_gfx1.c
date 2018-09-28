@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dos.h>
-#include <bios.h>
+// MIKE: #include <bios.h>
 #include <fcntl.h>
 #include <malloc.h>
 #include <math.h>
@@ -36,16 +36,20 @@ void Set_Palette(void)
   // this function sets the color look up table value indexed by index
   int a;
 
-  for(a=0;a<256;a++)
-  {
-      outp(PALETTE_MASK,0xff);
-      // tell vga card which register we will be updating
-      outp(PALETTE_REGISTER_WR, a);
-      // now update the RGB triple, note the same port is used each time
-      outp(PALETTE_DATA,red[a]);
-      outp(PALETTE_DATA,green[a]);
-      outp(PALETTE_DATA,blue[a]);
-  }
+  // MIKE:
+  printf("Set_Palette\n");
+
+  //for(a=0;a<256;a++)
+  //{
+  //    outp(PALETTE_MASK,0xff);
+  //    // tell vga card which register we will be updating
+  //    outp(PALETTE_REGISTER_WR, a);
+  //    // now update the RGB triple, note the same port is used each time
+  //    outp(PALETTE_DATA,red[a]);
+  //    outp(PALETTE_DATA,green[a]);
+  //    outp(PALETTE_DATA,blue[a]);
+  //}
+
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -93,7 +97,7 @@ void PCX_Load(char *filename, int pic_num,int enable_palette)
   {
     set_vmode(2);  
     printf("File [%s] not found\n\n",filename);
-    exit(1);
+     exit(1);
   }
   // load the header
   for (index=0; index<128; index++) temp_buffer[index] = getc(fp);

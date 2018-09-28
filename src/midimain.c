@@ -47,7 +47,7 @@
 #include  <ctype.h>
 #include  <io.h>
 #include  <conio.h>
-#include  <i86.h>
+// MIKE #include  <i86.h>
 
 
 /* Keeps track of last change of volume to avoid unnecessary calls to
