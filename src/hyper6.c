@@ -32,7 +32,11 @@ void Display_Text(int x, int y, char *txt, int color);
 
 #define UCHAR unsigned char
 #define SHORT short int
+#ifdef USE_ADT_FILES
 int ADT_FLAG=1;         //Off=0   On>0
+#else
+int ADT_FLAG=0;
+#endif
 
 // P R O T O T Y P E S //////////////////////////////////////////////////////
 
@@ -8399,6 +8403,8 @@ void main_hyper6(void)
     printf("\n\n*** Please run HCSETUP.EXE to configure system. ***\n");
     exit(0);
   }
+
+#ifdef USE_ADT_FILES
   a = adt1_init();
   if(a)
   {
@@ -8411,6 +8417,8 @@ void main_hyper6(void)
     printf("\n\n*** ERROR Could not find file HYPER2.ADT ***\n");
     exit(1);
   }
+#endif
+
   srand(timerval());
   Timer(18);      
   for(a=0;a<191;a++) picture[a].image = 0;

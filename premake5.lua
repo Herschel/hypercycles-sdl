@@ -9,6 +9,7 @@ project "hypercycles"
    language "C"
 
    targetdir "bin/%{cfg.buildcfg}"
+   debugdir "assets"
 
    nuget { "sdl2:2.0.5", "sdl2.redist:2.0.5" }
 
