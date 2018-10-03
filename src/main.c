@@ -9,13 +9,13 @@ SDL_Texture* texture;
 
 int main( int argc, char* argv[] )
 {
-
-    if( SDL_Init(SDL_INIT_VIDEO) != 0 ) {
+    if( SDL_Init(SDL_INIT_VIDEO) != 0 )
+	{
         printf( "SDL_Init Error: %s\n", SDL_GetError() );
         return 1;
     }
 
-	if (SDL_CreateWindowAndRenderer(320, 200, SDL_WINDOW_ALLOW_HIGHDPI, &window, &renderer))
+	if( SDL_CreateWindowAndRenderer(320, 200, SDL_WINDOW_ALLOW_HIGHDPI, &window, &renderer) )
 	{
 		printf("SDL_CreateWindowAndRenderer Error: %s\n", SDL_GetError());
 		return 1;
@@ -27,8 +27,6 @@ int main( int argc, char* argv[] )
 		printf("SDL_CreateTexture Error: %s", SDL_GetError());
 		return 1;
 	}
-
-
 
 	main_hyper6();
 

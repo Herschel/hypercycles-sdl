@@ -11,7 +11,12 @@ project "hypercycles"
    targetdir "bin/%{cfg.buildcfg}"
    debugdir "assets"
 
-   nuget { "sdl2:2.0.5", "sdl2.redist:2.0.5" }
+   nuget {
+      "sdl2.nuget:2.0.8.2",
+      "sdl2.nuget.redist:2.0.8.2",
+      "sdl2_mixer.nuget:2.0.2.2",
+      "sdl2_mixer.nuget.redist:2.0.2.2"
+   }
 
    files { "src/*.c", "src/*.h" }
    excludes { "src/build1.c" }
