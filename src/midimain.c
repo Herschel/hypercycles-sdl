@@ -108,6 +108,7 @@ extern int GFL2, ADT_FLAG;
 
 int open_adt2(char *fname);
 
+int midi_length = 0;
 
 UCHAR *Read_Midi_File (file_name)
    char *file_name;
@@ -131,7 +132,7 @@ UCHAR *Read_Midi_File (file_name)
           printf ("File too large.\n");
           return (NULL);
    }
-
+   midi_length = length;
    /* Allocate buffer for entire file. */
    c = (UCHAR *) malloc (length);
    if (!c) {
@@ -215,11 +216,12 @@ int play_song(char *song)
 
         
         /* Initalize the low-level sound-driver: */
-        
+        /* MIKE TODO
         if (!SoundColdInit (Music_Address)) {
                 printf ("\nAdlib board not found!");
                 return(1);
         }
+		*/
 
         /* Read the music file. */
         if(buf>0) free( buf);

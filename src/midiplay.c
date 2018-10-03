@@ -54,6 +54,7 @@ void Volume_OnOff (int);
 #include  <stdlib.h>
 #include  <fcntl.h>
 #include  <string.h>
+#include "SDL_mixer.h" // MIKE
 
 /* Some MIDI codes. */
 #define   END_OF_TRACK   0x2f
@@ -102,6 +103,8 @@ Midi_Init()
         clock_in = 1;
 }
 
+Mix_Music* music = NULL;
+extern int midi_length;
 
 /*-------------------------------------------------------------------------
    Main routine for playing a MIDI file.  It receives an array of function
@@ -112,13 +115,25 @@ Midi_Init()
 Midi_Play (dataPtr)
    UCHAR *dataPtr;
 {
-	// MIKE TODO:
-	return 0;
+	if (music != NULL)
+	{
+		Mix_FreeMusic(music);
+		music = NULL;
+	}
 
-   //if (!clock_in) return (0);
-   SetUp_Data (dataPtr);
-   Start_Melo ();
-   return (1);
+	if (dataPtr == NULL || midi_length <= 0)
+	{
+		return;
+	}
+
+	SDL_RWops* midi_stream = SDL_RWFromMem(dataPtr, midi_length);
+	music = Mix_LoadMUSType_RW(midi_stream, MUS_MID, 1);
+	if (music != NULL)
+	{
+		Mix_PlayMusic(music, -1);
+	}
+
+	musRunning = 1;
 }
 
 
@@ -133,6 +148,8 @@ Midi_End ()
 
    if (clock_in) Clk_uninstall();
    clock_in = 0;
+
+   musRunning = 0;
 }
 
 
