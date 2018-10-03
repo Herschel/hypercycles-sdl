@@ -14,22 +14,21 @@
 * You should have received a copy of the GNU General Public License
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Game.h"
 
-extern void main_hyper6(void);
+#ifndef HC_GAME_H
+#define HC_GAME_H
 
-Game game;
+#include <stdbool.h>
+#include "SDL.h"
+#include "SDL_mixer.h"
 
-int main( int argc, char* argv[] )
-{
-	if( !Game_Init( &game ) )
-	{
-		return 1;
-	}
+typedef struct {
+	SDL_Window*		window;
+	SDL_Renderer*   renderer;
+	SDL_Texture*    screen;	
+} Game;
 
-	main_hyper6();
-	
-	Game_Destroy( &game );
+bool Game_Init(Game* game);
+void Game_Destroy( Game* game );
 
-    return 0;
-}
+#endif // HC_GAME_H

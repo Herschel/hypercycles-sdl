@@ -16,6 +16,7 @@
 */
 #include "port_types.h"
 #include <stdio.h>
+#include "Game.h"
 #include "SDL.h"
 
 void _enable()
@@ -40,9 +41,7 @@ void* _dos_getvect(int i)
 	return NULL;
 }
 
-extern SDL_Window* window;
-extern SDL_Renderer* renderer;
-extern SDL_Texture* texture;
+extern Game game;
 extern unsigned int *vga_ram;
 extern unsigned char *vga_ram_c;
 extern unsigned char red[257], green[257], blue[257];
@@ -63,7 +62,7 @@ void delay(int ms)
 
 	unsigned int* pixels;
 	int* pitch;
-	SDL_LockTexture(texture, &r, &pixels, &pitch);
+	SDL_LockTexture(game.screen, &r, &pixels, &pitch);
 	for (int i = 0; i < 320 * 200; i++)
 	{
 		unsigned char pal = vga_ram_c[i];
@@ -72,10 +71,10 @@ void delay(int ms)
 		unsigned int b = blue[pal] << 2;
 		pixels[i] = (r << 24) | (g << 16) | (b << 8) | 0xff;
 	}
-	SDL_UnlockTexture(texture);
+	SDL_UnlockTexture(game.screen);
 	
-	SDL_RenderCopy(renderer, texture, NULL, NULL);
-	SDL_RenderPresent(renderer);
+	SDL_RenderCopy(game.renderer, game.screen, NULL, NULL);
+	SDL_RenderPresent(game.renderer);
 
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
