@@ -1,0 +1,18 @@
+version: "{build}"
+
+image: Visual Studio 2017
+
+install:
+  # Download and unzip premake 5.
+  # -L flag is important to follow HTTP 301 redirect.
+  - curl -fsSOL https://github.com/premake/premake-core/releases/download/v5.0.0-alpha12/premake-5.0.0-alpha12-windows.zip &&
+    7z x premake-5.0.0-alpha12-windows.zip
+
+before_build:
+  # Build the VS solution file using premake.
+  - premake5 vs2017
+  # Grab all of the necessary NuGet packages.
+  - nuget restore
+
+build:
+  project: hypercycles.sln
