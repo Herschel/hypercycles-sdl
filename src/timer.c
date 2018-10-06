@@ -16,7 +16,7 @@
 */
 // TIMER.C
 // MIKE:
-#include "port_types.h"
+#include "prelude.h"
 #include <dos.h>
 #include <stdlib.h>
 #include <conio.h>
