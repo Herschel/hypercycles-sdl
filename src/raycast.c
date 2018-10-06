@@ -22,7 +22,6 @@
 #include <string.h>
 #include "raycast.h"
 #include "optdemo.h"
-//#include "dos.h"
 #include "screen.h"
 #include "trig.h"
 #include "fixpoint.h"

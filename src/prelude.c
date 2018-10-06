@@ -16,8 +16,9 @@
 */
 #include "prelude.h"
 #include <stdio.h>
-#include "Game.h"
 #include "SDL.h"
+
+int sdl_key;
 
 void _enable()
 {
@@ -40,14 +41,6 @@ void* _dos_getvect(int i)
 	printf("_dos_getvect %d\n", i);
 	return NULL;
 }
-
-extern Game game;
-extern unsigned int *vga_ram;
-extern unsigned char *vga_ram_c;
-extern unsigned char red[257], green[257], blue[257];
-
-extern void New_Key_Int(void);
-int sdl_key;
 
 // TODO: Hoist this all out into the main loop.
 // Will have to tear apart the mcp1 function...
@@ -128,4 +121,9 @@ const char* getcmd()
 {
 	printf("getcmd\n");
 	return "";
+}
+
+int cprintf( const char * format, ... )
+{
+	return 0;
 }

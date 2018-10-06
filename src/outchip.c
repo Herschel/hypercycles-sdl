@@ -19,7 +19,6 @@
 //       Take care of data register to data register write delay.
 
 #include <stdlib.h>
-#include <conio.h>
 
 extern unsigned int genAddr;
 

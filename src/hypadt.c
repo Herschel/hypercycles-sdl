@@ -18,14 +18,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <dos.h>
-#include <conio.h>
-/* MIKE
-#include <i86.h>
-*/
 #include <sys/types.h>
 #include <fcntl.h>
-#include <io.h>
 #include <string.h>
 
 #pragma pack(1)

@@ -35,10 +35,7 @@
 **/
 #include "prelude.h" // MIKE
 #include <stdlib.h>
-#include <conio.h>
-
 #include "adlib.h"
-
 #include "cflags.h"
 
 /* Declaring variables as near improves performance. */

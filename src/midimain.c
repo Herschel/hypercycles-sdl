@@ -61,9 +61,6 @@
 #include  <fcntl.h>
 #include  <string.h>
 #include  <ctype.h>
-#include  <io.h>
-#include  <conio.h>
-// MIKE #include  <i86.h>
 
 
 /* Keeps track of last change of volume to avoid unnecessary calls to

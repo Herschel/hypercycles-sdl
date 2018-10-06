@@ -16,14 +16,9 @@
 */
 // I N C L U D E S ///////////////////////////////////////////////////////////
 
-#include <io.h>
-#include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <dos.h>
-// MIKE: #include <bios.h>
 #include <fcntl.h>
-#include <malloc.h>
 #include <math.h>
 #include <string.h>
 #include "h3d_gfx.h"

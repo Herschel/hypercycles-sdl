@@ -19,13 +19,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <io.h>
-#include <conio.h>
-#include <dos.h>
-#include <malloc.h>
 #include <fcntl.h>
 #include <string.h>
-// MIKE: #include <i86.h>
 
 //#define  WAIT_TIME                    0x0200
 #define  WAIT_TIME                    0x0800

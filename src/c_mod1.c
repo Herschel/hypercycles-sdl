@@ -15,13 +15,8 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include    <conio.h>
-#include    <dos.h>
 #include    <stdio.h>
 #include    <stdlib.h>
-// MIKE: #include    <i86.h>
-
-
 
 void set_vmode( int vmode)
 {

@@ -19,27 +19,13 @@
 // MIKE
 #include "prelude.h"
 
-#include <io.h>
-#include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <dos.h>
-/* MIKE
-#include <i86.h>
-#include <bios.h>
-*/
 #include <fcntl.h>
-/*
-#include <malloc.h>
-*/
 #include <math.h>
 
 #include <string.h>
-/*
-#include <graph.h>
-#include <process.h>
-#include "h3d_gfx.h"  // load our graphics library
-*/
+//#include "h3d_gfx.h"  // load our graphics library
 #include "trig.h"
 #include "fixpoint.h"
 

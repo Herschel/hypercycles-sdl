@@ -23,8 +23,6 @@
 
          Compile & Link: wcl386 /l=dos4g memory
       */
-     // MIKE: #include <i86.h>
-     #include <dos.h>
      #include <stdio.h>
      #include <string.h>
 
