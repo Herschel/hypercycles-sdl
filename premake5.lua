@@ -4,6 +4,23 @@ workspace "hypercycles"
    configurations { "debug", "release" }
    platforms { "win64" }
 
+   -- Windows SDK version.
+   -- Must be set outside filter.
+   systemversion "10.0.15063.0"
+
+   filter "configurations:debug"
+      defines { "DEBUG" }
+      symbols "On"
+
+   filter "configurations:release"
+      defines { "NDEBUG" }
+      optimize "On"
+
+   filter "platforms:win64"
+      system "Windows"
+      architecture "x64"
+
+
 project "hypercycles"
    kind "ConsoleApp"
    language "C"
@@ -20,15 +37,3 @@ project "hypercycles"
 
    files { "src/*.c", "src/*.h" }
    excludes { "src/build1.c" }
-
-   filter "configurations:debug"
-      defines { "DEBUG" }
-      symbols "On"
-
-   filter "configurations:release"
-      defines { "NDEBUG" }
-      optimize "On"
-
-   filter "platforms:win64"
-      system "Windows"
-      architecture "x64"
