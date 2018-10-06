@@ -61,8 +61,8 @@ void delay(int ms)
 
 
 	unsigned int* pixels;
-	int* pitch;
-	SDL_LockTexture(game.screen, &r, &pixels, &pitch);
+	int pitch;
+	SDL_LockTexture(game.screen, &r, (void**)&pixels, &pitch);
 	for (int i = 0; i < 320 * 200; i++)
 	{
 		unsigned char pal = vga_ram_c[i];
