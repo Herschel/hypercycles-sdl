@@ -367,8 +367,8 @@ void Write_DSP( int port, int data5)
 
 int Read_DSP()
 {
-	return;
 	printf("Read_DSP\n");
+    return 0;
 //  int a;
 //rd10:
 //  a = inp(io_addr+14);

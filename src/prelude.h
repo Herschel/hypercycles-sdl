@@ -45,6 +45,16 @@ int _dos_setvect( int i, void* handler );
 
 void* _dos_getvect( int i );
 
+#ifdef __APPLE__
+long filelength(int);
+char* itoa(int, char*, int);
+int getch(void);
+int kbhit(void);
+char* strupr(char*);
+int inp(int);
+void outp(int, int);
+#endif
+
 // TODO: Hoist this all out into the main loop.
 // Will have to tear apart the mcp1 function...
 void delay( int ms );

@@ -96,7 +96,7 @@ static Start_Melo ();
 /*-------------------------------------------------------------------------
         Install the clock interrupt routine.
 */
-Midi_Init()
+void Midi_Init(void)
 {
         if (clock_in) return;
         Clk_install();
@@ -112,7 +112,7 @@ extern int midi_length;
    events.
    Returns 0 if interrupt routine not installed, else returns 1.
 */
-Midi_Play (dataPtr)
+void Midi_Play (dataPtr)
    UCHAR *dataPtr;
 {
 	if (music != NULL)

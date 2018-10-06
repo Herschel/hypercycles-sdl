@@ -1268,7 +1268,7 @@ void Timer(int clicks)
 {
 	// MIKE:
 	printf("Timer %d\n", clicks);
-	return 0;
+	return;
 
   // this function uses the internal time keeper timer i.e. the one that goes
   // at 18.2 clicks/sec to to a time delay.  You can find a 32 bit value of
@@ -3291,7 +3291,7 @@ void select_cycle_view(int cb)
   return;
 }
 
-int random( int a,int b)
+int hc_random( int a,int b)
 {
    int c=-1;
    while(c==-1)
@@ -3306,8 +3306,8 @@ int select_openarea( int cb)
 {
    int m1,m2;
 
-   m1=random(2,62);
-   m2=random(2,62);
+   m1=hc_random(2,62);
+   m2=hc_random(2,62);
    if( !world[m2][m1] )
    {
       object[cb].opt3 = m1*64+32;
@@ -4232,7 +4232,7 @@ void move_objects()
                 object[a].image_num=79;
                 object[a].x = object[cb].x;
                 object[a].y = object[cb].y;
-                object[a].view_angle = random(0,3) * 1024;
+                object[a].view_angle = hc_random(0,3) * 1024;
               }
               break;
             case 3:  
@@ -4362,7 +4362,7 @@ void move_objects()
                 object[a].image_num=174;
                 object[a].x = object[cb].x;
                 object[a].y = object[cb].y;
-                object[a].view_angle = random(0,3);
+                object[a].view_angle = hc_random(0,3);
               }
               break;
             case 3:  
@@ -4383,7 +4383,7 @@ void move_objects()
                 object[cb].ycell = object[cb].y>>6;
                 object[cb].status=1;
                 object[cb].actx=0;
-                object[cb].opt3=random(1,4);
+                object[cb].opt3=hc_random(1,4);
                 a = object[cb].xcell;
                 b = object[cb].ycell;
                 ceilmap[b][a]=23;
@@ -4394,12 +4394,12 @@ void move_objects()
           {
             case 0:
               object[cb].actx=14; 
-              object[cb].xcell=random(5,57);
+              object[cb].xcell=hc_random(5,57);
               object[cb].x = object[cb].xcell * 64 + 32;
               object[cb].y = 32;
               object[cb].ycell = 0;
               object[cb].opt1++;
-              object[cb].opt2=random(2,7);
+              object[cb].opt2=hc_random(2,7);
               select_stalker_view(cb);
               break;
             case 1:  
@@ -7872,7 +7872,7 @@ void mcp1()
           }
           else
           {
-            a=random(1,5);
+            a=hc_random(1,5);
             switch(a)
             { 
               case 1:
@@ -7919,7 +7919,7 @@ void mcp1()
               }
               else
               {
-                a=random(1,5);
+                a=hc_random(1,5);
                 switch(a)
                 { 
                   case 1:
@@ -8180,7 +8180,7 @@ void mcp1()
       move_objects();
       if(dead)
       {
-          a=random(1,5);
+          a=hc_random(1,5);
           switch(a)
           { 
               case 1:

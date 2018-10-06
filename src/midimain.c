@@ -53,7 +53,7 @@
           setfreq.obj
 
 */
-
+#include "prelude.h"
 #include  "cflags.h"
 
 #include  <stdio.h>

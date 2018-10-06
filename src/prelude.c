@@ -42,6 +42,57 @@ void* _dos_getvect(int i)
 	return NULL;
 }
 
+#ifdef __APPLE__
+
+#include <unistd.h>
+
+long filelength(int fd)
+{
+    long len = 0;
+    if( fd >= 0 )
+    {
+        len = lseek(fd, 0, SEEK_END);
+        lseek(fd, 0, SEEK_SET);
+    }
+    return len;
+}
+
+char* itoa(int value, char* str, int base)
+{
+    sprintf(str, "%d", value);
+}
+
+int getch(void)
+{
+    return 0;
+}
+
+int kbhit(void)
+{
+    return 0;
+}
+
+int inp(int a)
+{
+    return 0;
+}
+
+char* strupr(char* s)
+{
+    while(*s != 0)
+    {
+        *s = toupper(*s);
+        s++;
+    }
+    return s;
+}
+
+void outp(int a, int b)
+{
+}
+
+#endif
+
 // TODO: Hoist this all out into the main loop.
 // Will have to tear apart the mcp1 function...
 void delay(int ms)
@@ -127,3 +178,4 @@ int cprintf( const char * format, ... )
 {
 	return 0;
 }
+
