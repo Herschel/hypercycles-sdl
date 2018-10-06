@@ -2,7 +2,7 @@
 
 workspace "hypercycles"
    configurations { "debug", "release" }
-   platforms { "win64" }
+   platforms { "win64", "osx" }
 
    -- Windows SDK version.
    -- Must be set outside filter.
@@ -12,28 +12,34 @@ workspace "hypercycles"
       defines { "DEBUG" }
       symbols "On"
 
-   filter "configurations:release"
+    filter "configurations:release"
       defines { "NDEBUG" }
       optimize "On"
 
-   filter "platforms:win64"
+    filter "platforms:win64"
       system "Windows"
       architecture "x64"
 
+    filter "platforms:osx"
+      system "macosx"
+      libdirs { "/usr/local/lib" }
+      includedirs { "/usr/local/include/SDL2" }
+      links { "SDL2", "SDL2_mixer" }
+
 
 project "hypercycles"
-   kind "ConsoleApp"
-   language "C"
+  kind "ConsoleApp"
+  language "C"
 
-   targetdir "bin/%{cfg.buildcfg}"
-   debugdir "assets"
+  targetdir "bin/%{cfg.buildcfg}"
+  debugdir "assets"
 
-   nuget {
-      "sdl2.nuget:2.0.8.2",
-      "sdl2.nuget.redist:2.0.8.2",
-      "sdl2_mixer.nuget:2.0.2.2",
-      "sdl2_mixer.nuget.redist:2.0.2.2"
-   }
+  nuget {
+    "sdl2.nuget:2.0.8.2",
+    "sdl2.nuget.redist:2.0.8.2",
+    "sdl2_mixer.nuget:2.0.2.2",
+    "sdl2_mixer.nuget.redist:2.0.2.2"
+  }
 
-   files { "src/*.c", "src/*.h" }
-   excludes { "src/build1.c" }
+  files { "src/*.c", "src/*.h" }
+  excludes { "src/build1.c" }
