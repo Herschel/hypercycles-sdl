@@ -25,6 +25,10 @@
 #define far
 #define near
 
+#ifdef __APPLE__
+#define O_BINARY 0
+#endif
+
 extern Game game;
 extern unsigned int *vga_ram;
 extern unsigned char *vga_ram_c;
