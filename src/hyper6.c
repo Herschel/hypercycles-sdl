@@ -2577,7 +2577,8 @@ int Load_World(char *file, char *wptr[64])
     // load in the next row
     for (column=0; column<WORLD_COLUMNS; column++)
     {
-      while((ch = getc(fp))==10){} // filter out CR
+        // NOTE(mike): Also filter out CRLF on non-Windows systems.
+      while((ch = getc(fp))==10 || ch==13){} // filter out CR
 
       // translate character to integer
       if (ch == ' ') ch=0;
