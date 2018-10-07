@@ -44,37 +44,9 @@ void* _dos_getvect(int i)
 
 #ifdef __APPLE__
 
-#include <unistd.h>
-
-long filelength(int fd)
-{
-    long len = 0;
-    if( fd >= 0 )
-    {
-        len = lseek(fd, 0, SEEK_END);
-        lseek(fd, 0, SEEK_SET);
-    }
-    return len;
-}
-
 char* itoa(int value, char* str, int base)
 {
     sprintf(str, "%d", value);
-}
-
-int getch(void)
-{
-    return 0;
-}
-
-int kbhit(void)
-{
-    return 0;
-}
-
-int inp(int a)
-{
-    return 0;
 }
 
 char* strupr(char* s)
@@ -86,12 +58,37 @@ char* strupr(char* s)
     }
     return s;
 }
+#endif
+
+long filelen( FILE* fd )
+{
+	long len = 0;
+	if( fd >= 0 )
+	{
+		len = fseek( fd, 0, SEEK_END );
+		fseek( fd, 0, SEEK_SET );
+	}
+	return len;
+}
+
+int getch( void )
+{
+	return 0;
+}
+
+int inp( int a )
+{
+	return 0;
+}
 
 void outp(int a, int b)
 {
 }
 
-#endif
+int kbhit( void )
+{
+	return 0;
+}
 
 // TODO: Hoist this all out into the main loop.
 // Will have to tear apart the mcp1 function...

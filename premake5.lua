@@ -41,5 +41,5 @@ project "hypercycles"
     "sdl2_mixer.nuget.redist:2.0.2.2"
   }
 
-  files { "src/*.c", "src/*.h" }
-  excludes { "src/build1.c" }
+  files { "src/*.c", "src/*.cpp", "src/*.h" }
+  excludes { "src/build1.cpp" }

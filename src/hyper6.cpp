@@ -45,6 +45,10 @@ int ADT_FLAG=0;
 int adt1_init();
 int adt2_init();
 
+int difflvl();
+int save_load( int which );
+void Display_Text( int x, int y, char *txt, int color );
+
 void _interrupt _far New_Key_Int(void);
 void Timer(int clicks);
 void Create_Scale_Data(int scale, int *row);
@@ -54,7 +58,7 @@ int Load_World(char *file,  char *wptr[64]);
 void Wait_For_Vsync(void);
 void Draw_Ground(void);
 
-int open_adt1(unsigned char *);
+int open_adt1(char *);
 
 void draw_maze( int ,int ,int );
 void Bld_Ang(void);
@@ -62,7 +66,7 @@ void Bld_Ang(void);
 void set_vmode( int vmode);
 void clrscrn(void);
 int getns(char *str,int maxchars);
-void prints( int row, int column, unsigned char txtstr, int attr );
+void prints( int row, int column, const char* txtstr, int attr );
 void Show_Notice(void);
 
 int getdistance(int degrees,int column_angle,int x,int y);
@@ -78,6 +82,12 @@ void Stop_Melo(void);
 void Volume_OnOff (int);
 int CTV_Init();
 extern int volume_flag, digital_speed;
+
+void PCX_Load( char *filename, int pic_num, int enable_palette );
+void PCX_Unload( int pic_num );
+void Set_Palette( void );
+void Grap_Bitmap( int orig_pic_num, int pic_num, int xs, int ys, int wide, int ht );
+void Grap_Bitmap2( int orig_pic_num, int pic_num, int xs, int ys, int wide, int ht );
 
 unsigned char *D32DosMemAlloc( unsigned int sz);
 unsigned int D32DosMemFree();
@@ -203,7 +213,7 @@ struct obj_def single;
 
 struct save_game_struc
 {
-  unsigned char games[15];
+  char			games[15];
   int           level;
   int           diff;  
   int           score, power, shields;
@@ -333,7 +343,7 @@ unsigned int Level_Time=0;
 
 int stick_x=0, stick_y=0, hgt=0, max_riders=5,curr_riders=0,debug_flag=0;
 int system_delay=0;
-unsigned char next_song[15], curr_song[15];
+char next_song[15], curr_song[15];
 int num_of_objects,speed_zone=-1;
 int dvar1, dvar2, dvar3;
 int level_num=1, total_level_def = 0, old_level_num=-1;
@@ -390,7 +400,7 @@ char access_load_flag=0, wallpro_flag=1, wallpro_ctr=0, saucer_load_flag=0;
 char missile_load_flag=0, keystat_load_flag=0;
 char music_toggle=2, digi_flag=2, view_flag=0, controls=0,dead=0, ctrl_pressed=0;
 unsigned char music_cnt=4, psi=0, pause=0;
-unsigned char access_buf[44], rider_walls[38];
+char access_buf[44], rider_walls[38];
 int grid_dir, grid_curspeed, grid_setspeed, radar_unit=1,low_power_flag=0;
 int low_speed=4, hi_speed=32;
 int adjust1=0,adjust2=0,adjust_turns=256;
@@ -407,14 +417,16 @@ float p_w_s;
 int prm_width_sh;
 int xp, yp, xv, yv, tx= -1,ty= -1;
 
-int demo_mode=0; demo_ctr=0, demo_command=0;
+int demo_mode=0; 
+int demo_ctr = 0;
+int demo_command=0;
 
 extern unsigned char red[257], green[257], blue[257];
 unsigned char red2[257], green2[257], blue2[257];
 
-unsigned char *world[WORLD_ROWS+5];       // pointer to matrix of cells that make up world of walls
-unsigned char *flrmap[WORLD_ROWS+5];      // pointer to matrix of cells that make up world of floor
-unsigned char *ceilmap[WORLD_ROWS+5];     // pointer to matrix of cells that make up world of ceiling
+char *world[WORLD_ROWS+5];       // pointer to matrix of cells that make up world of walls
+char *flrmap[WORLD_ROWS+5];      // pointer to matrix of cells that make up world of floor
+char *ceilmap[WORLD_ROWS+5];     // pointer to matrix of cells that make up world of ceiling
 
 unsigned char wall_ht_map[4150];  //4098
 
@@ -513,7 +525,7 @@ int save_game(int wh)
   game_data[wh].protons=weapon_list[0].qty;
   game_data[wh].neutrons=weapon_list[1].qty;
   game_data[wh].darts=weapon_list[3].qty;
-  strcpy(game_data[wh].access,access_buf);
+  strcpy(game_data[wh].access,(const char*)access_buf);
   for(z3=0;z3<30;z3++) game_data[wh].access[z3]=~game_data[wh].access[z3];
   
   _disable();
@@ -2034,11 +2046,6 @@ void list_levels()
   int a;
   char buf[10];
 
-  _disable();
-  _dos_setvect(KEYBOARD_INT, Old_Key_Isr);
-  _enable();
-  set_vmode( 2 );
-
   for(a=0;a<total_level_def;a++)
   {
     level_num =a+1;
@@ -2057,12 +2064,6 @@ void list_levels()
  else level_num=1;
  set_vmode( 0x13 );
  Set_Palette();
-  
- _disable();
- Old_Key_Isr = _dos_getvect(KEYBOARD_INT);
- _dos_setvect(KEYBOARD_INT, New_Key_Int);
- _enable();
-
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -2410,8 +2411,8 @@ void Render_Sliver( int pic_num, int scale, int column, int sl_col)
   second_tops[column] = st2;
           
   // alias a pointer to sprite for ease of access
-  if(pic_num <='Z') work_sprite = (char*) picture[pic_num - 'A'].image;
-  else work_sprite = (char*) picture[pic_num - 'a' + 26].image;
+  if(pic_num <='Z') work_sprite = (unsigned char*) picture[pic_num - 'A'].image;
+  else work_sprite = (unsigned char*) picture[pic_num - 'a' + 26].image;
 
   // compute offset of sprite in video buffer >>  offset=st*320+column;
   bufptr=double_buffer_c+(st2 << 8) + (st2 << 6) + column;
@@ -2475,8 +2476,8 @@ void Render_Sliver_Test( int pic_num, int scale, int column, int sl_col)
   second_tops[column] = st2;
           
   // alias a pointer to sprite for ease of access
-  if(pic_num <='Z') work_sprite = (char*) picture[pic_num - 'A'].image;
-  else work_sprite = (char*) picture[pic_num - 'a' + 26].image;
+  if(pic_num <='Z') work_sprite = (unsigned char*) picture[pic_num - 'A'].image;
+  else work_sprite = (unsigned char*) picture[pic_num - 'a' + 26].image;
 
   // compute offset of sprite in video buffer >>  offset=st*320+column;
   bufptr=double_buffer_c+(st2 << 8) + (st2 << 6) + column;
@@ -2535,9 +2536,9 @@ void Allocate_World(void)
   int index;      // allocate each row
   for (index=0; index<WORLD_ROWS; index++)
   {
-    world[index] = (char *) malloc(WORLD_COLUMNS+1);
-    flrmap[index] = (char *) malloc(WORLD_COLUMNS+1);
-    ceilmap[index] = (unsigned char *) malloc(WORLD_COLUMNS+1);
+    world[index] = (char*)malloc(WORLD_COLUMNS+1);
+    flrmap[index] = (char*)malloc(WORLD_COLUMNS+1);
+    ceilmap[index] = (char*)malloc(WORLD_COLUMNS+1);
   } // end for index
 } // end Allocate_World
 
@@ -2547,7 +2548,7 @@ int Load_World(char *file, char *wptr[64])
 {
   // this function opens the input file and loads the world data from it
 
-  FILE  *fp, *fopen();
+  FILE  *fp;
   int row,column;
   char ch;
 
@@ -2673,7 +2674,7 @@ void Texture_Load()
         b = level_def.tile1_assign[a] - 'a' + 26;
         Grap_Bitmap(128,b   ,  x,  y, 64, 64);
         // MIKE: picture[b+13].image = picture[b].image;
-		picture[b + 13].image = malloc(picture[b].width*picture[b].height + 1);
+		picture[b + 13].image = (unsigned int*)malloc(picture[b].width*picture[b].height + 1);
 		memcpy(picture[b + 13].image, picture[b].image, picture[b].width*picture[b].height + 1);
         picture[b+13].width = picture[b].width;
         picture[b+13].height= picture[b].height;
@@ -2775,7 +2776,7 @@ void Texture_Load()
 void gtest()
 {
  int a,b,c;
- unsigned char * tptr;
+ char * tptr;
 
  tptr= (char *) picture[2].image;
 
@@ -2793,7 +2794,7 @@ void Render_Objects(int xview, int yview)
   int a,b,c,d,e,f,g, objd;
   int x2, y2, ang, va2;
   int obj_dist, height, width;
-  unsigned char * spr_ptr;
+  char * spr_ptr;
   float rad1, f_ang, fa;
   int width_inc, width_ctr, half_width, width_sh, ht_ctr, ht_inc,orgwidth;
   int column_ctr;
@@ -8302,7 +8303,7 @@ All_Done: ;
 
 int cmd_line()
 {
-  unsigned char cl[260],ch;
+  char cl[260],ch;
   int a,b=0;
   const char* src = "";// getcmd(cl);
   strcpy(cl, src);
@@ -8352,9 +8353,9 @@ void main_hyper6(void)
 
 
   // MIKE:
-  equip = malloc(0x5C);// pointer to bios equip
-  clockr = malloc(0x100); // pointer to internal
-  vga_ram = malloc(0xFFFF); // points to vga ram
+  equip = (unsigned int*)malloc(0x5C);// pointer to bios equip
+  clockr = (unsigned int*)malloc(0x100); // pointer to internal
+  vga_ram = (unsigned int*)malloc(0xFFFF); // points to vga ram
   vga_ram_c = (unsigned char *)vga_ram; // points to vga ram
 
   //equip = (unsigned int *) 0x00000410; // pointer to bios equip
@@ -8452,7 +8453,7 @@ void main_hyper6(void)
   level_num=1;
   
   // initialize the double buffer
-  double_buffer_c=malloc(64100);
+  double_buffer_c= (unsigned char*)malloc(64100);
   if(double_buffer_c==NULL)
   {
     exit(1);
@@ -8462,7 +8463,7 @@ void main_hyper6(void)
   
   // install new isr's
   _disable();
-  Old_Key_Isr = _dos_getvect(KEYBOARD_INT);
+  Old_Key_Isr = (void(*)())_dos_getvect(KEYBOARD_INT);
   _dos_setvect(KEYBOARD_INT, New_Key_Int);
   _enable();
   delay(250);

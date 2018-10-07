@@ -26,7 +26,7 @@
 #pragma pack(1)
 struct adt_struc
 {
-    unsigned char   fname[15];
+    char			fname[15];
     int             start;
     int             length;
 } adt2[85];
@@ -94,11 +94,11 @@ int adt2_init()
 }
 
 
-int open_adt1(unsigned char *fname)
+int open_adt1(char *fname)
 {
-  //FILE *fpf;
+  FILE *fpf;
   int a,b=0,start;
-  unsigned char fn2[20];
+  char fn2[20];
 
   GFL1_FP = NULL;
   strcpy(fn2,fname);
@@ -134,15 +134,16 @@ int open_adt1(unsigned char *fname)
   if(GFL1_FP==NULL) return(-1);
   a=fseek( GFL1_FP, start, SEEK_SET);
   if(a<0) return(-1);
-  return(1);
+  return 1;
 }
 
 
 
-int open_adt2(unsigned char *fname)
+FILE* open_adt2(char *fname)
 {
-  int fpf,a,b=0,start;
-  unsigned char fn2[20];
+	FILE* fpf;
+	int a, b = 0, start;
+  char fn2[20];
   strcpy(fn2,fname);
   strupr(fn2);
   //printf("[[%s]]\n",fn2);
@@ -156,15 +157,15 @@ int open_adt2(unsigned char *fname)
       if(!strcmp(fn2,adt2[a].fname)) { b++; break;}
     }
   }
-  if(!b) return(-1);
+  if(!b) return nullptr;
   
   GFL2 = adt2[a].length;
   start = adt2[a].start;
   
   //fpf = open("HYPER2.ADT", O_RDONLY + O_BINARY);
-  fpf = open("HYPER2R.ADT", O_RDONLY + O_BINARY);
-  if(fpf==-1) return(-1);
-  a=lseek( fpf, start, SEEK_SET);
-  if(a<0) return(-2);
+  fpf = fopen("HYPER2R.ADT", "rb");
+  if(fpf==nullptr) return(nullptr);
+  a=fseek( fpf, start, SEEK_SET);
+  if(a<0) return(nullptr);
   return(fpf);
 }

@@ -42,6 +42,10 @@
 #define N_V near
 
 static void SoundWarmInit(void);
+void SetMode( int mode );
+void SetGParam( int amD, int vibD, int nSel );
+void SetPitchRange( unsigned int pR );
+void SetWaveSel( int i );
 
 /*
         In percussive mode, the last 4 voices  (SD TOM HH CYMB) are created
@@ -195,7 +199,7 @@ static const char N_V voicePSlot[] = {
    Function prototypes.
 */
 
-extern SndOutput();                     /* in file OUTCHIP.ASM */
+extern void SndOutput(int a, int b);                     /* in file OUTCHIP.ASM */
 //extern SetFreq();                               /* in file SETFREQ.ASM */
 
 static void InitSlotParams(void);
@@ -225,8 +229,8 @@ unsigned  SetFreq (int, int, int, int);
 
         Returns 0 if hardware not found.
 */
-int SoundColdInit (port)
-        unsigned port;                  /* io port address of sound board (0x388) */
+/* io port address of sound board (0x388) */
+int SoundColdInit (unsigned port)
         {
         int hardware;
 
@@ -286,8 +290,7 @@ void SoundWarmInit(void)
         to their default timbres.
 ---------------------------------------------
 */
-SetMode (mode)
-        int mode;
+void SetMode (int mode)
         {
 
         if (mode){
@@ -319,7 +322,7 @@ SetMode (mode)
         this function with a value of 0 AFTER calling SoundColdInit()
         or SoundWarmInit().
 */
-SetWaveSel (state)
+void SetWaveSel (int state)
         {
         int i;
 
@@ -342,8 +345,7 @@ SetWaveSel (state)
         The change will be effective as of the next call to
         'SetVoicePitch()'.
 */
-SetPitchRange (pR)
-        unsigned pR;
+void SetPitchRange (unsigned int pR)
         {
         if (pR > 12)
                 pR = 12;
@@ -361,8 +363,7 @@ SetPitchRange (pR)
         The change takes place immediately.
 ----------------------------------------------
 */
-SetGParam (amD, vibD, nSel)
-        int amD, vibD, nSel;
+void SetGParam (int amD, int vibD, int nSel)
         {
         amDepth = amD;
         vibDepth = vibD;
@@ -405,9 +406,7 @@ SetGParam (amD, vibD, nSel)
         format.
 ------------------------------------------------
 */
-void SetVoiceTimbre (voice, paramArray)
-        unsigned voice;
-        unsigned * paramArray;
+void SetVoiceTimbre (unsigned int voice, unsigned int* paramArray)
         {
         unsigned wave0, wave1;
         unsigned * prm1, * wavePtr;
@@ -443,8 +442,7 @@ void SetVoiceTimbre (voice, paramArray)
         0 <= volume <= 127
 --------------------------------------------------
 */
-void SetVoiceVolume (voice, volume)
-        unsigned voice, volume;                 /* 0 - 0x7f */
+void SetVoiceVolume (unsigned int voice, unsigned int volume)
 {
         unsigned char * slots;
 
@@ -480,9 +478,7 @@ void SetVoiceVolume (voice, volume)
         0 <= pitchBend <= 0x3fff, 0x2000 == exact tuning
 -------------------------------------------------
 */
-SetVoicePitch (voice, pitchBend)
-        unsigned voice;
-        unsigned pitchBend;
+void SetVoicePitch (unsigned int voice, unsigned int pitchBend)
 {
         if ((!percussion && voice < 9) || voice <= BD) {
                 /* melodic + bass-drum */
@@ -504,9 +500,7 @@ SetVoicePitch (voice, pitchBend)
         0 <= pitch <= 127, 60 == MID_C  (the card can play between 12 and 107 )
 -----------------------------------------------------------
 */
-NoteOn (voice, pitch)
-        unsigned voice;
-        int pitch;                      /* 0 - 127 */
+void NoteOn (unsigned int voice, int pitch)
         {
         pitch -=  (MID_C - CHIP_MID_C);
         if (pitch < 0)
@@ -546,8 +540,7 @@ NoteOn (voice, pitch)
         0 <= voice <= 8 in melodic mode,
         0 <= voice <= 10 in percussive mode;
 */
-NoteOff (voice)
-        unsigned voice; 
+void NoteOff (unsigned int voice)
         {
         if ((!percussion && voice < 9) || voice < BD) {
                 voiceKeyOn [voice] = 0;
@@ -601,9 +594,7 @@ static void InitSlotParams(void)
         Used to change the parameter 'param' of the slot 'slot'
         with the value 'val'. The chip registers are updated.
 */
-SetASlotParam (slot, param, val)
-        int slot, val;
-        int param;              /* parameter number */
+void SetASlotParam (int slot, int param, int val)
 {
         paramSlot [slot] [param] = val;
         SndSetPrm (slot, param);
@@ -621,8 +612,7 @@ SetASlotParam (slot, param, val)
         of slot 'slot'. Update the parameter array and the chip.
 ------------------------------------------------------
 */
-static void SetSlotParam (slot, param, waveSel)
-        unsigned slot, * param, waveSel;
+static void SetSlotParam (unsigned int slot, unsigned int* param, unsigned int waveSel)
 {
         int i;
         char * ptr;
@@ -632,9 +622,7 @@ static void SetSlotParam (slot, param, waveSel)
         SndSetAllPrm (slot);
 }       /* SetSlotParam() */
 
-void SetCharSlotParam (slot, cParam, waveSel)
-        int slot, waveSel;
-        unsigned char * cParam;
+void SetCharSlotParam (int slot, unsigned char* cParam, int waveSel)
         {
         unsigned param [nbLocParam];
         int i;
@@ -651,8 +639,7 @@ void SetCharSlotParam (slot, cParam, waveSel)
         Update the chip registers.
 -----------------------------------------------
 */
-static void SndSetPrm (slot, prm)
-        int slot, prm;
+static void SndSetPrm (int slot, int prm)
 {
 
         switch (prm) {
@@ -706,7 +693,7 @@ static void SndSetPrm (slot, prm)
         Transfer all the parameters from slot 'slot' to
         the chip.
 */
-static void SndSetAllPrm (slot)
+static void SndSetAllPrm (int slot)
 {
         SndSAmVibRhythm();
         SndSNoteSel();
@@ -723,7 +710,7 @@ static void SndSetAllPrm (slot)
         Write to the register which controls output level and does
         key-on/key-offs for the percussive voice slots.
 */
-static void SndSKslLevel (slot)
+static void SndSKslLevel (int slot)
 {
         unsigned t1, vc, singleSlot;
 
@@ -761,7 +748,7 @@ static void SndSNoteSel(void)
         FEED-BACK and FM (connection).
         Applicable only to operator 0 in melodic mode.
 */
-static void SndSFeedFm (slot)
+static void SndSFeedFm (int slot)
 {
         unsigned t1;
 
@@ -776,7 +763,7 @@ static void SndSFeedFm (slot)
 /*
         ATTACK, DECAY
 */
-static void SndSAttDecay (slot)
+static void SndSAttDecay (int slot)
 {
         unsigned t1;
 
@@ -789,7 +776,7 @@ static void SndSAttDecay (slot)
 /*
         SUSTAIN, RELEASE
 */
-static void SndSSusRelease (slot)
+static void SndSSusRelease (int slot)
 {
         unsigned t1;
 
@@ -803,7 +790,7 @@ static void SndSSusRelease (slot)
 /*
         AM, VIB, EG-TYP (Sustaining), KSR, MULTI
 */
-static void SndSAVEK (slot)
+static void SndSAVEK (int slot)
 {
         unsigned t1;
 
@@ -834,7 +821,7 @@ static void SndSAmVibRhythm(void)
 /*
         Set the wave-select parameter.
 */
-static void SndWaveSelect (slot)
+static void SndWaveSelect (int slot)
         {
         unsigned wave;
 
@@ -851,7 +838,7 @@ static void SndWaveSelect (slot)
         or percussive mode.
 */
 
-static void UpdateFNums (voice)
+static void UpdateFNums (int voice)
 {
    bxRegister [voice] = SetFreq (voice, voiceNote [voice], vPitchBend [voice], voiceKeyOn [voice]);
 }

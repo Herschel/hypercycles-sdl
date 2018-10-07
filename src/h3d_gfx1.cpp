@@ -26,7 +26,7 @@
 void set_vmode( int vmode);
 extern int GFL1A, GFL1B, ADT_FLAG;
 extern FILE *GFL1_FP;
-FILE * open_adt1(unsigned char *fname);
+int open_adt1(char *fname);
 
 // G L O B A L S  ////////////////////////////////////////////////////////////
 
@@ -87,7 +87,7 @@ void PCX_Load(char *filename, int pic_num,int enable_palette)
   // data for the pcx file is decompressed and expanded into a secondary buffer
   // within the picture structure, the separate images can be grabbed from this
   // buffer later.  also the header and palette are loaded
-  FILE *fp, *fopen();
+	FILE *fp;
   int num_bytes,index;
   long count;
   unsigned char data, *ibuffer;
@@ -121,7 +121,7 @@ void PCX_Load(char *filename, int pic_num,int enable_palette)
   picture[pic_num].ratio=((xlen+1)<<8) / (ylen+1);  // *256
   picture[pic_num].image=0;
   
-  ibuffer = malloc(xlen*(ylen+1)+16);
+  ibuffer = (unsigned char*)malloc(xlen*(ylen+1)+16);
   if(ibuffer==NULL) return;
   picture[pic_num].image= (unsigned int *) ibuffer;
   
@@ -185,7 +185,7 @@ void Grap_Bitmap(int orig_pic_num, int pic_num, int xs, int ys, int wide, int ht
   picture[pic_num].ratio=((wide)<<8) / (ht);  // *256
       
   // first allocate the memory for the sprite in the sprite structure
-  ibuffer = malloc(wide*ht + 1);
+  ibuffer = (unsigned char*)malloc(wide*ht + 1);
   if(ibuffer==NULL) return;
   picture[pic_num].image=(unsigned int *) ibuffer;
   // now load the data from the pcx picture
@@ -214,7 +214,7 @@ void Grap_Bitmap2(int orig_pic_num, int pic_num, int xs, int ys, int wide, int h
   picture[pic_num].image=0;
       
   // first allocate the memory for the sprite in the sprite structure
-  ibuffer = malloc(wide*ht + 1);
+  ibuffer = (unsigned char*)malloc(wide*ht + 1);
   if(ibuffer==NULL) return;
   picture[pic_num].image=(unsigned int *) ibuffer;
   // now load the data from the pcx picture

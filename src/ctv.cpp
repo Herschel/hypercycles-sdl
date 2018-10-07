@@ -696,7 +696,7 @@ unsigned int D32DosMemFree()
 
 extern int GFL2;
 
-int open_adt2(char *fname);
+FILE* open_adt2(char *fname);
 void set_vmode( int vmode);
 
 void play_vox(char * fname)
@@ -705,7 +705,7 @@ void play_vox(char * fname)
 	return;
 
   int a, length;
-  int fp;
+  FILE* fp;
 
   if(digi_flag<2) return; 
   //a = CTV_Card_Here();
@@ -715,10 +715,10 @@ void play_vox(char * fname)
   CTV_Halt(); 
   
  
-  if(!ADT_FLAG) fp = open(fname,O_RDONLY);
+  if(!ADT_FLAG) fp = fopen(fname,"r");
   else fp = open_adt2(fname);
 
-  if(fp<0) 
+  if(fp == NULL) 
   {
     /*
      set_vmode(2);
@@ -732,11 +732,11 @@ void play_vox(char * fname)
     return;
   }
   
-  if(!ADT_FLAG) length = filelength (fp);
+  if(!ADT_FLAG) length = filelen (fp);
   else length=GFL2;
   
-  read (fp, digibuf , length);
-  close(fp);
+  fread(digibuf, 1, length, fp);
+  fclose(fp);
 
   a = CTV_Output( digibuf, length, digital_speed);
   _enable();

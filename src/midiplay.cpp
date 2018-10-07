@@ -40,13 +40,14 @@
 void Clk_uninstall(void);
 void Clk_install(void);
 void SetClkRate(int);
-void NoteOff(int);
-void NoteOn(int,int);
-void SetVoiceVolume(int,int);
-void SetVoicePitch(int,int);
-void SetPitchRange(int);
+void NoteOff(unsigned int);
+void NoteOn(unsigned int,int);
+void SetVoiceVolume(unsigned int,unsigned int);
+void SetVoicePitch(unsigned int,unsigned int);
+void SetPitchRange(unsigned int);
 void Volume_OnOff (int);
-
+void Set_Tempo( unsigned int tickQnote, long usec );
+void Set_Original_Clock();
 
 #include  "cflags.h"
 
@@ -90,8 +91,8 @@ static char    end_of_data;            /* != 0 if end of data */
 static char    clock_in = 0;           /* != 0 if installed */
 
 /* Prototypes */
-static SetUp_Data (UCHAR *);
-static Start_Melo ();
+static void SetUp_Data (UCHAR *);
+static void Start_Melo(void);
 
 /*-------------------------------------------------------------------------
         Install the clock interrupt routine.
@@ -112,8 +113,7 @@ extern int midi_length;
    events.
    Returns 0 if interrupt routine not installed, else returns 1.
 */
-void Midi_Play (dataPtr)
-   UCHAR *dataPtr;
+void Midi_Play (UCHAR* dataPtr)
 {
 	if (music != NULL)
 	{
@@ -140,7 +140,7 @@ void Midi_Play (dataPtr)
 /*-------------------------------------------------------------------------
         Uninstall the clock driver ...
 */
-Midi_End ()
+void Midi_End(void)
 {
    //int n;
    //for (n=0; n < MAX_VOICES; n++) current_vol [n] = 0;
@@ -155,8 +155,7 @@ Midi_End ()
 
 /*-------------------------------------------------------------------------
    Get word value from data.  Value is stored MSB first. */
-static unsigned Get_Word (ptr)
-   UCHAR *ptr;
+static unsigned int Get_Word (UCHAR* ptr)
 {
    unsigned n;
    n = *ptr++;
@@ -166,8 +165,7 @@ static unsigned Get_Word (ptr)
 
 
 /* Get long value from data.  Value is stored MSB to LSB. */
-static long Get_Long (ptr)
-   UCHAR *ptr;
+static long Get_Long (UCHAR* ptr)
 {
    long l = 0L;
    int n;
@@ -176,13 +174,10 @@ static long Get_Long (ptr)
    return (l);
 }
 
-
 /*-------------------------------------------------------------------------
    Set up trkPtrs, which is an array of pointers, to point to the track
    chunks. Does not modify musPtr. */
-static SetUp_Tracks (trcks, chunk)
-   int trcks;
-   UCHAR *chunk;
+static void SetUp_Tracks(int trcks, UCHAR* chunk)
 {
    int n;
    long length;
@@ -219,8 +214,7 @@ static long Get_Length ()
 
 /*-------------------------------------------------------------------------
   Set up all of the data structures used in playing a MIDI file. */
-static SetUp_Data (dataPtr)
-   UCHAR *dataPtr;
+static void SetUp_Data (UCHAR* dataPtr)
 {
    long length;
    int i ;
@@ -247,7 +241,7 @@ static SetUp_Data (dataPtr)
 /*-------------------------------------------------------------------------
         Start playing a melody. Set some global pointers and the tempo.  Start
         the clock driver with the first delay (>= 1) */
-static Start_Melo ()
+static void Start_Melo ()
 {
         extern void StartTimeOut (int);
 
@@ -269,7 +263,7 @@ static Start_Melo ()
 
 /*-------------------------------------------------------------------------
    Stop playing the melody. Reset the clock frequency to normal (18.2 Hz). */
-Stop_Melo()
+void Stop_Melo()
 {
         Volume_OnOff (0);
         Set_Original_Clock ();
@@ -281,7 +275,7 @@ Stop_Melo()
    Set clock rate to its original interrupt rate. Note that the clock rate
    has been saved at 10 times its real value in order to preserve some
    accuracy. */
-Set_Original_Clock ()
+void Set_Original_Clock ()
 {
    SetClkRate (0);
 }
@@ -295,9 +289,7 @@ Set_Original_Clock ()
 
         If tempo is zero, reprogram the counter for 18.2 Hz.
 */
-Set_Tempo (tickQnote, usec)
-        unsigned tickQnote;         /* ticks per quarter note */
-        long     usec;              /* micro-seconds per quarter note */
+void Set_Tempo (unsigned int tickQnote, long usec)
 {
         long count;
 
@@ -321,7 +313,7 @@ Set_Tempo (tickQnote, usec)
    event and sets the running status for that track as well.
    Returns number of ticks until next event. */
 
-static unsigned  Get_Next_Delay ()
+static unsigned int Get_Next_Delay ()
 {
    static long tickCount = 0;          /* current absolute time */
    static int  ctrk = 0;               /* current track */
@@ -357,8 +349,7 @@ static unsigned  Get_Next_Delay ()
 }
 
 /*-------------------------------------------------------------------------*/
-static void myNoteOn (voice, note, volume)
-   int voice, note, volume;
+static void myNoteOn (int voice, int note, int volume)
 {
    if (!volume_flag) {
           /* Exit if sound is disabled. */
@@ -384,8 +375,7 @@ static void myNoteOn (voice, note, volume)
    Process a regular MIDI event.  Which routine to call is determined by
    using the 3 LSB's of the high nibble. */
 
-static void  Midi_Event (event)
-   unsigned event;
+static void  Midi_Event (unsigned int event)
 {
    /* Table of # of data bytes which follow a regular midi status byte */
    static int data_bytes [7] = { 2, 2, 2, 2, 1, 1, 2 };
@@ -422,14 +412,12 @@ static void  Midi_Event (event)
 /*-------------------------------------------------------------------------
    Process an Ad Lib specifec meta-event. */
 
-static void  AdLib_Specific (code, data)
-   int code;
-   unsigned char *data;
+static void  AdLib_Specific (int code, unsigned char* data)
 {
    if (code == 1) {
           /* Instrument change code.  First byte of data contains voice number.
                  Following bytes contain instrument parameters.  */
-          extern void SetVoiceTimbre (int, unsigned *);
+          extern void SetVoiceTimbre (unsigned int, unsigned *);
           int n;
           unsigned int params [28];
           for (n=0; n < 28; n++) params [n] = data [n+1];
@@ -437,7 +425,7 @@ static void  AdLib_Specific (code, data)
    }
    else if (code == 2) {
           /* Melo/perc mode code.  0 is melodic, !0 is percussive. */
-          extern SetMode (int);
+          extern void SetMode (int);
           SetMode ((int) data [0]);
    }
    else if (code == 3) {
@@ -514,8 +502,7 @@ static void  Meta_Event ()
 
 
 /*-------------------------------------------------------------------------*/
-static void Sysex_Event (event)
-   UCHAR event;
+static void Sysex_Event (UCHAR event)
 {
    long len = Get_Length ();
    UCHAR event2;

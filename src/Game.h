@@ -22,11 +22,11 @@
 #include "SDL.h"
 #include "SDL_mixer.h"
 
-typedef struct {
+struct Game {
 	SDL_Window*		window;
 	SDL_Renderer*   renderer;
 	SDL_Texture*    screen;	
-} Game;
+};
 
 bool Game_Init(Game* game);
 void Game_Destroy( Game* game );

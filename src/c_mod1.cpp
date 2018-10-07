@@ -84,7 +84,7 @@ void putchat(int ch, int attr)
 	printf("putchat %d %d\n", ch, attr);
 }
 
-void prints( int row, int column, unsigned char *txtstr, int attr )
+void prints( int row, int column, const char *txtstr, int attr )
 {
     /*int a=0,b;
     while(txtstr[a])

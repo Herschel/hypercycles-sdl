@@ -42,7 +42,7 @@ char *cptr, *flptr;
 int z5_table[6000];
 int last_va=-1, last_fs[322], last_fs2[322];
 int last_fxi[110], last_fyi[110], last_fx[110], last_fy[110];
-unsigned char floor_resol=1;
+int floor_resol=1;
 
 extern unsigned char wall_ht_map[4098];
 extern int xmaze_sq, ymaze_sq, res_def;
@@ -78,6 +78,7 @@ extern int viewer_height;
 //extern unsigned char far *texturelist[15];
 
 int getdistance(int degrees,int column_angle,int x,int y);
+int getd2( int x, int y, int xview, int yview );
 
 int column_angle;
 

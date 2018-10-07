@@ -55,7 +55,7 @@
 */
 #include "prelude.h"
 #include  "cflags.h"
-
+#include <dos.h>
 #include  <stdio.h>
 #include  <stdlib.h>
 #include  <fcntl.h>
@@ -70,18 +70,17 @@ extern int volume_flag;
 
 int Music_Address=0x388;
 
-int SoundColdInit(int);
+int SoundColdInit(unsigned int);
 void Midi_Init(void);
 void Midi_End(void);
 void Stop_Melo(void);
-void NoteOff(int);
-void SetVoiceVolume(int,int);
+void NoteOff(unsigned int);
+void SetVoiceVolume(unsigned int,unsigned int);
 void Test_Event(void);
 /*-------------------------------------------------------------------------
    Enable or disable the volume, but continue playing the song.
 */
-void Volume_OnOff (flag)
-   int flag;
+void Volume_OnOff (int flag)
 {
    int n;
    //if (flag != volume_flag) {
@@ -103,18 +102,17 @@ void Volume_OnOff (flag)
 
 extern int GFL2, ADT_FLAG;
 
-int open_adt2(char *fname);
+FILE* open_adt2(char *fname);
 
 int midi_length = 0;
 
-UCHAR *Read_Midi_File (file_name)
-   char *file_name;
+UCHAR *Read_Midi_File (char* file_name)
 {
-   int file ;
+   FILE* file ;
    UCHAR *events, *c;
    long length;
 
-   if(!ADT_FLAG) file = open (file_name, O_RDONLY + O_BINARY);
+   if(!ADT_FLAG) file = fopen (file_name, "rb");
    else file = open_adt2(file_name);
    
    if (file < 0) {
@@ -122,7 +120,7 @@ UCHAR *Read_Midi_File (file_name)
           return (NULL);
    }
 
-   if(!ADT_FLAG) length = filelength (file);
+   if(!ADT_FLAG) length = filelen (file);
    else length=GFL2;
 
    if (length > 0xffff) {
@@ -139,9 +137,9 @@ UCHAR *Read_Midi_File (file_name)
    events = c;
 
    /* Read the file into the buffer. */
-   read (file, c, length);
+   fread (c, 1, length, file);
 
-   close (file);
+   fclose (file);
    return (events);
 }
 

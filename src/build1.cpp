@@ -100,13 +100,13 @@ void clear_object_def()
   
 void num_of_records()
 {
-  int handle;
+  FILE* handle;
   /* open a file & find # of records              */
-  handle = open( "LEVEL.DEF", O_RDONLY | O_BINARY );
-  if( handle != -1 )
+  handle = fopen( "LEVEL.DEF", O_RDONLY | O_BINARY );
+  if( handle != NULL )
   {
-    total_level_def = filelength( handle ) / sizeof(level_def) ;
-    close( handle );
+    total_level_def = filelen( handle ) / sizeof(level_def) ;
+    fclose( handle );
   }
 }
 
