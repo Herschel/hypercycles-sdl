@@ -2,7 +2,11 @@
 
 workspace "hypercycles"
    configurations { "debug", "release" }
-   platforms { "win64", "osx" }
+   if os.target() == "windows" then
+      platforms { "win64" }
+   else
+      platforms { "osx" }
+   end
 
    -- Windows SDK version.
    -- Must be set outside filter.
