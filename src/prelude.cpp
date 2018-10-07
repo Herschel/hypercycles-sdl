@@ -30,23 +30,12 @@ void _disable()
 	// MIKE TODO: Remove.
 }
 
-int _dos_setvect(int i, void* handler)
-{
-	printf("_dos_setvect %d\n", i);
-	return 0;
-}
-
-void* _dos_getvect(int i)
-{
-	printf("_dos_getvect %d\n", i);
-	return NULL;
-}
-
 #ifdef __APPLE__
 
 char* itoa(int value, char* str, int base)
 {
     sprintf(str, "%d", value);
+	return str;
 }
 
 char* strupr(char* s)

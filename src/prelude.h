@@ -42,10 +42,6 @@ void _enable( void );
 
 void _disable( void );
 
-int _dos_setvect( int i, void* handler );
-
-void* _dos_getvect( int i );
-
 #ifdef __APPLE__
 char* itoa(int, char*, int);
 char* strupr(char*);

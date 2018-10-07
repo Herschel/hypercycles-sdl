@@ -55,7 +55,6 @@
 */
 #include "prelude.h"
 #include  "cflags.h"
-#include <dos.h>
 #include  <stdio.h>
 #include  <stdlib.h>
 #include  <fcntl.h>
@@ -115,7 +114,7 @@ UCHAR *Read_Midi_File (char* file_name)
    if(!ADT_FLAG) file = fopen (file_name, "rb");
    else file = open_adt2(file_name);
    
-   if (file < 0) {
+   if (file == NULL) {
           printf ("Cannot open file %s \n", file_name);
           return (NULL);
    }
@@ -201,7 +200,7 @@ void reset_buf()
 
 void free_buf()
 {
-  if(buf>0) free( buf);
+  if(buf!=NULL) free( buf);
 }
 
 int play_song(char *song)
@@ -219,7 +218,7 @@ int play_song(char *song)
 		*/
 
         /* Read the music file. */
-        if(buf>0) free( buf);
+        if(buf!=NULL) free( buf);
         buf = Read_Midi_File (song);
         if (!buf) exit (0);
 

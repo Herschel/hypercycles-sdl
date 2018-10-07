@@ -73,8 +73,8 @@ int  PAGE_TO_DMA, LEN_L_TO_DMA, LEN_H_TO_DMA, LAST_DMA_OFFSET;
 int dmac_page_reg=0x83, dmac_curr_addx_reg=2, dmac_curr_len_reg=3;
 unsigned char *digibuf;
 extern int new_key;
-#define D32RealSeg(P)    (((( unsigned int) (P)) >>4) &0xFFFF)
-#define D32RealOff(P)    (((unsigned int) (P)) & 0xF)
+// #define D32RealSeg(P)    (((( unsigned int) (P)) >>4) &0xFFFF)
+// #define D32RealOff(P)    (((unsigned int) (P)) & 0xF)
 
 int io_addr = 0x220, DMA_Channel=1;
 int intr_num=5, gl_result, CTV_voice_status=0, dummy;
@@ -415,35 +415,35 @@ void Pause_DSP_DMA()
 
 void Old_Calc_Addr( unsigned char *addr1)
 {
- unsigned int a,b,c;
+//  unsigned int a,b,c;
 
- a = D32RealSeg(addr1); 
- b = D32RealOff(addr1);
- printf(" RS=%x    RO=%x    \n",a,b);
- a <<= 4;
- c = a;
- a = a & 0xf;
- c = c & 0x0fff0;
- b += c;
- a += (b >>16);
- b = b & 0xffff;
+//  a = D32RealSeg(addr1); 
+//  b = D32RealOff(addr1);
+//  printf(" RS=%x    RO=%x    \n",a,b);
+//  a <<= 4;
+//  c = a;
+//  a = a & 0xf;
+//  c = c & 0x0fff0;
+//  b += c;
+//  a += (b >>16);
+//  b = b & 0xffff;
 
 
- DMA_CURRENT_PAGE = a;
- DMA_CURRENT_ADDX = b;
+//  DMA_CURRENT_PAGE = a;
+//  DMA_CURRENT_ADDX = b;
 
 }
 
 void Calc_Addr( unsigned char *addr1)
 {
- unsigned int a,b;
- a = (unsigned int) addr1;
- b = a;
- a = a & 0xffff;
- b = b >> 16;
+//  unsigned int a,b;
+//  a = (unsigned int) addr1;
+//  b = a;
+//  a = a & 0xffff;
+//  b = b >> 16;
 
- DMA_CURRENT_ADDX = a;
- DMA_CURRENT_PAGE = b;
+//  DMA_CURRENT_ADDX = a;
+//  DMA_CURRENT_PAGE = b;
 
 }
 

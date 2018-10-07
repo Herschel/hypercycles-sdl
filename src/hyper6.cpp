@@ -8464,10 +8464,10 @@ void main_hyper6(void)
   memset(double_buffer_l,0,64000);
   
   // install new isr's
-  _disable();
-  Old_Key_Isr = (void(*)())_dos_getvect(KEYBOARD_INT);
-  _dos_setvect(KEYBOARD_INT, New_Key_Int);
-  _enable();
+  // _disable();
+  // Old_Key_Isr = (void(*)())_dos_getvect(KEYBOARD_INT);
+  // _dos_setvect(KEYBOARD_INT, New_Key_Int);
+  // _enable();
   delay(250);
   master_control=0;
   while(!master_control) mcp1();
@@ -8475,9 +8475,9 @@ void main_hyper6(void)
   if(music_toggle==2) Midi_End();
   // replace old ISR's
   delay(400);
-  _disable();
-  _dos_setvect(KEYBOARD_INT, Old_Key_Isr);
-  _enable();
+  // _disable();
+  // _dos_setvect(KEYBOARD_INT, Old_Key_Isr);
+  // _enable();
   
   for(a=0; a<191; a++) PCX_Unload(a); //Unload all gfx
   free_buf();
