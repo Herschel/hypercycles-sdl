@@ -26,7 +26,7 @@ bool Game_Init( Game* game )
 		return false;
 	}
 
-	if( SDL_CreateWindowAndRenderer(1280, 800, SDL_WINDOW_ALLOW_HIGHDPI, &game->window, &game->renderer) )
+	if( SDL_CreateWindowAndRenderer(1280, 960, SDL_WINDOW_ALLOW_HIGHDPI, &game->window, &game->renderer) )
 	{
 		printf("SDL_CreateWindowAndRenderer Error: %s\n", SDL_GetError());
 		return false;
