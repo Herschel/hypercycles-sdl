@@ -34,6 +34,8 @@ obj/
 *.su
 
 # Solution/project files
+*.make
+Makefile
 packages/
 packages.config
 *.sln
@@ -41,6 +43,11 @@ packages.config
 *.vcxproj.filters
 *.vcxproj.user
 .vs/
+*.xcodeproj/
+*.xcworkspace/
+
+# Premake
+premake5
 
 # Build artifacts
 bin/Debug
