@@ -12,14 +12,15 @@
 -- 
 -- You should have received a copy of the GNU General Public License
 -- along with this program. If not, see <http://www.gnu.org/licenses/>.
-
 workspace "hypercycles"
   language "C++"
   configurations { "debug", "release" }
   if os.target() == "windows" then
     platforms { "win64" }
-  else
+  elseif os.target() == "osx" then
     platforms { "osx" }
+  elseif os.target() == "linux" then
+    platforms { "linux" }
   end
 
   -- Windows SDK version.
@@ -35,7 +36,7 @@ workspace "hypercycles"
     optimize "On"
 
   filter "platforms:win64"
-    system "Windows"
+    system "windows"
     architecture "x64"
 
   filter "platforms:osx"
@@ -44,6 +45,10 @@ workspace "hypercycles"
     includedirs { "/usr/local/include/SDL2" }
     links { "SDL2", "SDL2_mixer" }
 
+  filter "platforms:linux"
+    system "linux"
+    includedirs { "/usr/include/SDL2", "/usr/include/SDL2_mixer" }
+    links { "SDL2", "SDL2_mixer" }
 
   project "hypercycles"
     kind "ConsoleApp"
