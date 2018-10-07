@@ -63,9 +63,9 @@ char* strupr(char* s)
 long filelen( FILE* fd )
 {
 	long len = 0;
-	if( fd >= 0 )
+	if( fd != NULL && fseek( fd, 0, SEEK_END ) == 0 )
 	{
-		len = fseek( fd, 0, SEEK_END );
+		len = ftell( fd );
 		fseek( fd, 0, SEEK_SET );
 	}
 	return len;
