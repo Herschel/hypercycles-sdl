@@ -527,15 +527,12 @@ int save_game(int wh)
   game_data[wh].darts=weapon_list[3].qty;
   strcpy(game_data[wh].access,(const char*)access_buf);
   for(z3=0;z3<30;z3++) game_data[wh].access[z3]=~game_data[wh].access[z3];
-  
-  _disable();
   zz5=55;
   for(z3=0;z3<10000;z3++) zz5=(zz5/1234)*32*zz5;
   fp1 = fopen("hyper.sav","wb+" );
   if(fp1 == NULL) return(0);
   for(z3=0; z3<10; z3++) fwrite( &game_data[z3], sizeof( gm_one ), 1, fp1);
   fclose(fp1);
-  _enable();
 
   return(1);
 }
@@ -571,7 +568,6 @@ int stick()
 {
   int a=0,b=0,d=5000; 
   unsigned char c;
-  _disable();
   outp( 0x201, 255);
   while(d)
   {
@@ -582,12 +578,10 @@ int stick()
     {
       stick_x = a;
       stick_y = b;
-      _enable();
       return(1);
     }
     d--;
   }
-  _enable();
   return(0); // means no joystick attached
 }
 
@@ -716,7 +710,7 @@ void calibrate_stick()
 
     Ctalk("Move Joystick to Upper Left",100);
     Ctalk("and Press Button 1",115);
-    while(buttons()&b) _enable();
+    // while(buttons()&b) _enable();
     delay(100);
     while(1)
     {
@@ -733,7 +727,7 @@ void calibrate_stick()
 
     Ctalk("Move Joystick to Lower Right",100);
     Ctalk("and Press Button 1",115);
-    while(buttons()&b) _enable();
+    // while(buttons()&b) _enable();
     delay(100);
     while(1)
     {
@@ -746,7 +740,7 @@ void calibrate_stick()
         break;
       }
     }
-    while(buttons()&b ==0) _enable();
+    // while(buttons()&b ==0) _enable();
 
     hc_setup.left   = ((b1-c1)/4) +c1;
     hc_setup.top    = ((b2-c2)/4) +c2;
@@ -1298,7 +1292,6 @@ void Timer(int clicks)
 
   while(1)
   {
-    _enable();
     th = *clockr;
     if( th > now) return;
   }
@@ -1614,7 +1607,6 @@ void Stats()
  tmr5 = timerval();
  while(!new_key) 
  {
-   _enable();
    if(!CTV_voice_status) 
    {
      if(tmr5 < timerval())
@@ -5267,7 +5259,6 @@ void Move_Weapon()
 
 void cont_music()
 {
-       _enable();
        if(!musRunning && music_toggle==2) 
        { 
         if( music_cnt==4) { play_again(); music_cnt--; }
@@ -5870,7 +5861,6 @@ void credits()
 
   for(a=199; a>0; a--)
   {
-    _enable();
     memcpy(double_buffer_l, picture[146].image,63360);
     PCX_Paste_Image(60, a, 0, 147);
     memcpy(vga_ram, double_buffer_l,63360);
@@ -5880,7 +5870,6 @@ void credits()
   
   for(a=1; a<780; a++)
   {
-    _enable();
     memcpy(double_buffer_l, picture[146].image,63360);
     PCX_Paste_Image(60, 0, a, 147);
     memcpy(vga_ram, double_buffer_l,63360);
@@ -5895,7 +5884,6 @@ Cred_Jump:
   PCX_Unload(146);
   delay(10);
   Set_Palette();
-  _enable();
 }  
 
 void DocTalk(char * tx)
@@ -5915,7 +5903,6 @@ void doctor_ender1()
   b=1;
   for(a=25; a<picture[131].width-4; a+=4)
   {
-    _enable();
     PCX_Show_Image(160,100,131,a);
     delay(10);
   }
@@ -5993,7 +5980,6 @@ void doctor_ender1()
   b=1;
   for(a=picture[131].width-4;a>25; a-=10)
   {
-    _enable();
     PCX_Show_Image(160,100,131,a);
     delay(10);
     memcpy(vga_ram,double_buffer_l,prm_copy1);
@@ -6011,7 +5997,6 @@ void doctor_ender2()
   b=1;
   for(a=25; a<picture[131].width-4; a+=4)
   {
-    _enable();
     PCX_Show_Image(160,100,131,a);
     delay(10);
   }
@@ -6089,7 +6074,6 @@ void doctor_ender2()
   b=1;
   for(a=picture[131].width-4;a>25; a-=10)
   {
-    _enable();
     PCX_Show_Image(160,100,131,a);
     delay(10);
     memcpy(vga_ram,double_buffer_l,prm_copy1);
@@ -6110,7 +6094,6 @@ void doctor()
   b=1;
   for(a=25; a<picture[131].width-4; a+=4)
   {
-    _enable();
     PCX_Show_Image(160,100,131,a);
     delay(10);
   }
@@ -6206,7 +6189,6 @@ void doctor()
   b=1;
   for(a=picture[131].width-4;a>25; a-=10)
   {
-    _enable();
     PCX_Show_Image(160,100,131,a);
     delay(10);
     memcpy(vga_ram,double_buffer_l,prm_copy1);
@@ -6320,7 +6302,6 @@ int menu2()
            e++;
            break;  
        }
-       _enable();
        if(!musRunning && music_toggle==2) 
        { 
         if( music_cnt==4) { play_again(); music_cnt--; }
@@ -6704,7 +6685,6 @@ int menu1(int ck)
            e++;
            break;  
        }
-       _enable();
        if(!musRunning && music_toggle==2) 
        { 
         if( music_cnt==4) { play_again(); music_cnt--; }
@@ -6826,7 +6806,6 @@ int difflvl()
            e++;
            break;  
        }
-       _enable();
        if(!musRunning && music_toggle==2) 
        { 
         if( music_cnt==4) { play_again(); music_cnt--; }
@@ -7040,8 +7019,6 @@ int save_load(int which)  //0=save 1=load
       delay(100);
       new_key=0;
     }
-
-       _enable();
        if(!musRunning && music_toggle==2) 
        { 
         if( music_cnt==4) { play_again(); music_cnt--; }
@@ -7093,7 +7070,6 @@ void opening_screen()
   b=1;
   for(a=25; a<1000; a+=b)
   {
-    _enable();
     PCX_Show_Image(160,100,5,a);
     delay(10);
     if(a>320) b+=3;
@@ -7107,7 +7083,6 @@ void opening_screen()
   b=1;
   for(a=25; a<1000; a+=b)
   {
-    _enable();
     PCX_Show_Image(160,100,5,a);
     delay(10);    
     if(a>320) b+=3;
@@ -7117,29 +7092,23 @@ void opening_screen()
   }
   //memset(vga_ram,0,64000);
 OS_Jump:
-  _enable();
   memcpy(vga_ram, picture[4].image,63360);
   PCX_Unload(5);
   PCX_Load("intro3.pcx", 5,1);
   b=1;
   for(a=25; a<320; a+=b) 
   {
-    _enable();
     PCX_Show_Image(160,100,5,a);
   }
   memcpy(double_buffer_l, vga_ram, 63360);  //Store in buffer for menu
-  _enable();
   if(!raw_key) delay(3000);
   raw_key=0;
   PCX_Unload(5);
   PCX_Unload(4);
   delay(12);
   //Timer(12);      
-  _enable();
   Timer(12);      
-  _enable();
   Timer(12);      
-  _enable();
 }  
 
 
@@ -7210,28 +7179,23 @@ void starter_lights()
     PCX_Copy_Image(296,24, 67);
     PCX_Copy_Image(296,38, 67);
     PCX_Copy_Image(296,52, 67);
-    _enable();
     Timer(8);
     digital_speed=11025;
     play_vox("start1.raw");
     PCX_Copy_Image(296,52, 68);
-    _enable();
     Timer(8);
     digital_speed=12025;
     play_vox("start1.raw");
     PCX_Copy_Image(296,38, 68);
-    _enable();
     Timer(8);
     digital_speed=13025;
     play_vox("start1.raw");
     PCX_Copy_Image(296,24, 68);
-    _enable();
     Timer(8);
     digital_speed=14025;
     play_vox("start1.raw");
     PCX_Copy_Image(296,10, 68);
     digital_speed=11025;
-    _enable();
 }
 
 void game_setup()
@@ -7280,7 +7244,7 @@ int speed_test()
   memset(wall_ht_map, 63, 4098); //Reset Heights at 64
   
   tm=timerval()+1;
-  while( tm<timerval() ) _enable();
+  // while( tm<timerval() ) _enable();
   tm=tm+18;
   a=1024;
   while( tm>timerval())
@@ -7539,7 +7503,6 @@ void mcp1()
     new_key;
     while(!done)
     {
-      _enable();
       if(music_toggle==2 && !musRunning)
       {     
         if(music_cnt==4) { play_again(); music_cnt--; }
@@ -8265,7 +8228,6 @@ void mcp1()
        Shadow_Text( 116, 95,"GAME PAUSED",255,12);
        while(!new_key)
        {
-         _enable();
          cont_music();
        }
        pause=0;
@@ -8485,7 +8447,6 @@ void main_hyper6(void)
   D32DosMemFree();
  
   Show_Notice();
-  _enable();
  
   exit(0);
 }

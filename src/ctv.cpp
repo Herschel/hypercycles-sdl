@@ -739,5 +739,4 @@ void play_vox(char * fname)
   fclose(fp);
 
   a = CTV_Output( digibuf, length, digital_speed);
-  _enable();
 }

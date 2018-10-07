@@ -20,16 +20,6 @@
 
 int sdl_key;
 
-void _enable()
-{
-	// MIKE TODO: Remove.
-}
-
-void _disable()
-{
-	// MIKE TODO: Remove.
-}
-
 #ifdef __APPLE__
 
 char* itoa(int value, char* str, int base)
