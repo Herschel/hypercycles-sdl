@@ -1623,6 +1623,8 @@ void Stats()
        tmr5 = timerval()+95;
      }
    }
+   // NOTE(mike): Delay to force events to pump and get next level working.
+   delay( 16 );
  }
  new_key=0;
 
