@@ -45,6 +45,9 @@ workspace "hypercycles"
     -- Disable warnings over fopen_s, etc.
     -- TODO(mike): Eventually removes this as I wrap most file I/O.
     defines "_CRT_SECURE_NO_WARNINGS"
+    -- TODO(mike): The trig tables in trig.cpp are encoded as hex constants,
+    -- which GCC warns about.
+    disablewarnings "4838"
 
   filter "platforms:osx"
     system "macosx"
