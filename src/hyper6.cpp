@@ -363,7 +363,7 @@ struct setup_struc
 extern int Music_Address, DMA_Channel, io_addr, intr_num;
 int mct=0, sct=0;
 
-float circ = .35333333;
+float circ = .35333333f;
 // D E F I N E S /////////////////////////////////////////////////////////////
 
 #include  "h3d_mdef.h"
@@ -500,7 +500,7 @@ int load_config()
   mct= hc_setup.mct;
   sct= hc_setup.sct;
   
-  controls= hc_setup.contr;
+  controls= static_cast<char>( hc_setup.contr );
   
   if(mct) music_toggle=2;
   else music_toggle=0;
@@ -675,7 +675,7 @@ void stick_funcs()
 void Ctalk(char * tx,int b)
 {
   int a;
-  a = 160 - ((strlen(tx) * 8)/2);
+  a = 160 - ((static_cast<int>(strlen(tx)) * 8)/2);
   Display_Text(  a-1, b-1,tx,10);
   Display_Text(    a, b,tx,255);
 }
@@ -2501,7 +2501,8 @@ void Build_Tables(void)
   atan_table = (int *) malloc(sizeof(int) * 322);
   for(cb=0; cb<=319; cb++)
   {
-    ang=atan((float)(cb-160) / VIEWER_DISTANCE) * (NUMBER_OF_DEGREES/6.28);
+	  // TODO(mike): Maybe use doubles here?
+    ang=static_cast<int>( atanf(static_cast<float>(cb-160) / VIEWER_DISTANCE) * (NUMBER_OF_DEGREES/6.28f) );
     if(ang < 0) ang += NUMBER_OF_DEGREES;
     if(ang > NUMBER_OF_DEGREES-1) ang -= NUMBER_OF_DEGREES;
     atan_table[cb] = ang;
@@ -2816,11 +2817,12 @@ void Render_Objects(int xview, int yview)
       if(!x2) x2++;
       if(!y2) y2++;
 
-      rad1 = atan((float) y2 / x2); 
-      if(x2 < 0 ) f_ang = 1.570796327 + rad1;
-      else f_ang = 4.712388981 + rad1;
+	  // TODO(mike): Maybe use doubles here?
+      rad1 = atanf(static_cast<float>( y2  ) / x2); 
+      if(x2 < 0 ) f_ang = 1.570796327f + rad1;
+      else f_ang = 4.712388981f + rad1;
 
-      rad1 =  f_ang * 651.898647;
+      rad1 =  f_ang * 651.898647f;
       ang = (int) rad1;  
       dvar2=ang;  
 
@@ -2829,14 +2831,19 @@ void Render_Objects(int xview, int yview)
               
       b = ( ang - va2 + 450 ) ;   // equals screen column of center of image
 
-      circ = .3555555;
+      circ = .3555555f;
       f_ang = (float) b * circ;
-      fa = (160 - f_ang) * 0.10;  // Error Correction 0.15
+      fa = (160 - f_ang) * 0.10f;  // Error Correction 0.15
       
       // b equals center column
-      b = (int) f_ang + fa;
+	  // TODO(mike): Originall was (int) f_ang + fa;
+	  // C-style cast in the original code has higher precedence than addition.
+	  // Was this meant to be (int)(f_ang + fa)?
+	  // For now, I converted it to be the same behavior.
+      b = static_cast<int>( static_cast<int>( f_ang ) + fa );
 
-      obj_dist = sqrt( (x2*x2) + (y2*y2)) ;
+	  // TODO(mike): Maybe use doubles here?
+      obj_dist = static_cast<int>( sqrtf( static_cast<float>( (x2*x2) + (y2*y2) )) );
       if(obj_dist<1) obj_dist=1;
       objd = obj_dist;
       if( objd > 800 ) objd = 800;
@@ -5885,7 +5892,7 @@ Cred_Jump:
 void DocTalk(char * tx)
 {
   int a;
-  a = 160 - ((strlen(tx) * 8)/2);
+  a = 160 - ((static_cast<int>( strlen(tx) ) * 8)/2);
   Display_Text(  a-1, 180,tx,10);
   Display_Text(    a, 181,tx,255);
 }
@@ -5920,7 +5927,7 @@ void doctor_ender1()
     else
     {
       DocTalk(drs[ctr].sent1);
-      a = 160 - ((strlen(drs[ctr].sent1) * 8)/2);
+      a = 160 - ((static_cast<int>( strlen(drs[ctr].sent1) ) * 8)/2);
       Display_Text(  a-1, 190,drs[ctr].sent2,10);
       Display_Text(    a, 191,drs[ctr].sent2,255);
 
@@ -6014,7 +6021,7 @@ void doctor_ender2()
     else
     {
       DocTalk(drf[ctr].sent1);
-      a = 160 - ((strlen(drf[ctr].sent1) * 8)/2);
+      a = 160 - ((static_cast<int>( strlen(drf[ctr].sent1) ) * 8)/2);
       Display_Text(  a-1, 190,drf[ctr].sent2,10);
       Display_Text(    a, 191,drf[ctr].sent2,255);
 
