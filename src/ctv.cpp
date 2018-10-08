@@ -266,8 +266,6 @@ void DMA_Out_Transfer()
   Write_DSP( io_addr+12, (DMA_CURRENT_COUNT >> 8) & 0xff );
 }
 
-extern void cld_asm(void);
-#pragma aux cld_asm = "cld";
 unsigned char aaa;
 void _interrupt _far DMA_Out_Intr(void)
 {
