@@ -17,7 +17,7 @@ workspace "hypercycles"
   configurations { "debug", "release" }
   if os.target() == "windows" then
     platforms { "win64" }
-  elseif os.target() == "osx" then
+  elseif os.target() == "macosx" then
     platforms { "osx" }
   elseif os.target() == "linux" then
     platforms { "linux" }
@@ -27,7 +27,8 @@ workspace "hypercycles"
   -- Must be set outside filter.
   systemversion "10.0.15063.0"
 
-  defines "PLATFORM=%{cfg.platform}"
+  -- Define PLATFORM_WIN64 etc. macro for all platforms.
+  defines "PLATFORM_%{string.upper(cfg.platform)}"
 
   filter "configurations:debug"
     defines { "DEBUG" }

@@ -20,8 +20,7 @@
 
 int sdl_key;
 
-#if PLATFORM != win64
-
+#ifndef PLATFORM_WIN64
 char* itoa(int value, char* str, int base)
 {
     sprintf(str, "%d", value);
