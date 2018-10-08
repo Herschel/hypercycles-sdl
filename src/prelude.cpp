@@ -21,26 +21,18 @@
 
 int sdl_key;
 
-#ifndef PLATFORM_WIN64
-char* itoa(int value, char* str, int base)
-{
-    sprintf(str, "%d", value);
-	return str;
-}
-
-char* strupr(char* s)
-{
-    while(*s != 0)
-    {
-        *s = toupper(*s);
-        s++;
-    }
-    return s;
-}
-#endif
-
 // TODO(mike): Temporary to make loading work on case-sensitive platforms.
 // Temporary until ADT file loading code is cleaned up.
+char* strupper(char* s)
+{
+	while (*s != 0)
+	{
+		*s = toupper(*s);
+		s++;
+	}
+	return s;
+}
+
 char* strlower( char* s )
 {
 	while( *s != 0 )
@@ -49,6 +41,12 @@ char* strlower( char* s )
 		s++;
 	}
 	return s;
+}
+
+char* int_to_str(int value, char* str, int base)
+{
+	sprintf(str, "%d", value);
+	return str;
 }
 
 long filelen( FILE* fd )

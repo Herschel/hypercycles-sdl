@@ -802,7 +802,7 @@ void weapon_display()
   char f1_buf[40],f2_buf[40];
   if(curr_weapon==-1) return;
                 
-  itoa(weapon_list[curr_weapon].qty,f2_buf,10);
+  int_to_str(weapon_list[curr_weapon].qty,f2_buf,10);
   strcpy(f1_buf,weapon_list[curr_weapon].item);
   if(curr_weapon!=2 && curr_weapon!=4 && curr_weapon!=6) strcat(f1_buf,f2_buf);
 
@@ -1568,7 +1568,7 @@ void Stats()
  
  // Display Info
  strcpy(tb1,"LEVEL SCORE > ");
- itoa(level_score,tb2,10);
+ int_to_str(level_score,tb2,10);
  strcat(tb1,tb2);
  Shadow_Text(  9,24,tb1,9,12); //Shadow
  
@@ -1576,28 +1576,28 @@ void Stats()
  if(rings==rings_avail)
  {
    score+=level_score+25000;
-   itoa(25000,tb2,10);
+   int_to_str(25000,tb2,10);
  }
  else
  {
    score+=level_score;
-   itoa(0,tb2,10);
+   int_to_str(0,tb2,10);
  }
  strcat(tb1,tb2);
  Shadow_Text(  9,44,tb1,9,12); //Shadow
  
  strcpy(tb1,"TOTAL SCORE > ");
- itoa(score,tb2,10);
+ int_to_str(score,tb2,10);
  strcat(tb1,tb2);
  Shadow_Text(  9,64,tb1,9,12); //Shadow
  
  strcpy(tb1,"TOTAL KEYS AVAILABLE > ");
- itoa(rings_avail,tb2,10);
+ int_to_str(rings_avail,tb2,10);
  strcat(tb1,tb2);
  Shadow_Text(  9,84,tb1,9,12); //Shadow
  
  strcpy(tb1," TOTAL KEYS ACQUIRED > ");
- itoa(rings,tb2,10);
+ int_to_str(rings,tb2,10);
  strcat(tb1,tb2);
  Shadow_Text(  9,104,tb1,9,12); //Shadow
  
@@ -7117,19 +7117,19 @@ void starter_lights()
     if(!demo_mode)
     {
       strcpy(tb1,"LEVEL ");
-      itoa(level_num,tb2,10);
+	  int_to_str(level_num,tb2,10);
       strcat(tb1,tb2);
       Display_Text(  9, 9,tb1,10); //Shadow
       Display_Text( 10,10,tb1,253);
     }
     else Shadow_Text( 124,10,"DEMO MODE",253,10);
     strcpy(tb1," GATE KEYS REQUIRED >");
-    itoa(rings_req,tb2,10);
+	int_to_str(rings_req,tb2,10);
     strcat(tb1,tb2);
     Display_Text(  9,29,tb1,10);
     Display_Text( 10,30,tb1,7);
     strcpy(tb1,"GATE KEYS AVAILABLE >");
-    itoa(rings_avail,tb2,10);
+	int_to_str(rings_avail,tb2,10);
     strcat(tb1,tb2);
     Display_Text(  9,43,tb1,10);
     Display_Text( 10,44,tb1,249);

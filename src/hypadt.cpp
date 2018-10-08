@@ -110,7 +110,7 @@ int open_adt1(char *fname)
 	  return 1;
   }
 
-  strupr(fn2);
+  strupper(fn2);
   
   for(a=0;a<135;a++)
   {
@@ -160,7 +160,7 @@ FILE* open_adt2(char *fname)
 	  return fopen( fn2, "r" );
   }
 
-  strupr(fn2);
+  strupper(fn2);
   //printf("[[%s]]\n",fn2);
   for(a=0;a<120;a++)
   {

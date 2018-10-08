@@ -26,10 +26,6 @@
 #define far
 #define near
 
-#ifdef __APPLE__
-#define O_BINARY 0
-#endif
-
 extern Game game;
 extern unsigned int *vga_ram;
 extern unsigned char *vga_ram_c;
@@ -38,12 +34,9 @@ extern unsigned char red[257], green[257], blue[257];
 extern void New_Key_Int( void );
 extern int sdl_key;
 
-#ifndef PLATFORM_WIN64
-char* itoa(int, char*, int);
-char* strupr(char*);
-#endif
-
+char* strupper( char* );
 char* strlower( char* );
+char* int_to_str( int, char*, int );
 
 long filelen( FILE* );
 int getch( void );
