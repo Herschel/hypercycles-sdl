@@ -21,12 +21,12 @@ hypercycles-sdl uses the [SDL](https://www.libsdl.org/) and [SDL_mixer](https://
  * Install [Homebrew](https://brew.sh).
  * Run `brew install sdl2 sdl2_mixer`
  * Download [premake5](https://github.com/premake/premake-core/releases/download/v5.0.0-alpha12/premake-5.0.0-alpha12-macosx.tar.gz) and extract it in the project folder.
- * Run `premake5 gmake` to generate a makefile.
- * Run `config=(osx,release)` to build the game.
+ * Run `premake5 gmake2` to generate a makefile.
+ * Run `make` to build the game.
  * Alternatively, use `premake5 xcode4` to generate an Xcode project.
 
 ### Linux
- * Run `sudo apt-get install libsdl2-2.0` (or use the appropiate package manager for your distro).
+ * Run `sudo apt-get install libsdl2-dev libsdl2-mixer-dev` (or use the appropiate package manager for your distro).
  * Download [premake5](https://github.com/premake/premake-core/releases/download/v5.0.0-alpha12/premake-5.0.0-alpha12-linux.tar.gz) and extract it in the project folder.
- * Run `premake5 gmake` to generate a makefile.
- * Run `config=(linux,release) make` to build the game.
+ * Run `premake5 gmake2` to generate a makefile.
+ * Run `make` to build the game.
