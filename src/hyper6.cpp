@@ -2068,7 +2068,7 @@ void _interrupt _far New_Key_Int(void)
   // when a key is pressed.  Note: how it differs from the one were saw in the
   // chapter on I/O.  It has been modified to take into consideration the demo
   // mode of the system
-  int r1; 
+  // int r1; 
 
   // replacement for inline asm
   /*_enable();

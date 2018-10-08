@@ -96,7 +96,6 @@ int adt2_init()
 
 int open_adt1(char *fname)
 {
-  FILE *fpf;
   int a,b=0,start;
   char fn2[20];
 

@@ -44,9 +44,6 @@ unsigned char red[257], green[257], blue[257];
 
 void Set_Palette(void)
 {
-  // this function sets the color look up table value indexed by index
-  int a;
-
   // MIKE:
   printf("Set_Palette\n");
 
