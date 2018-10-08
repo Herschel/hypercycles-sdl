@@ -70,7 +70,7 @@ extern struct pic_def
   int            width;
   int            height;
   int            ratio;
-} picture[150];
+} picture[192];
 
 extern int *atan_table; 
 extern int *row_table;
@@ -85,12 +85,13 @@ int column_angle;
 void Bld_Ang(void)
 {
   int a;  
-  column_angle=atan((float)(prm_left-160) / VIEWER_DISTANCE)*(NUMBER_OF_DEGREES/6.28);
+  // NOTE(mike): Replaced atan with atanf.
+  column_angle=static_cast<int>( atanf( static_cast<float>(prm_left-160) / VIEWER_DISTANCE)*(NUMBER_OF_DEGREES/6.28f) );
   if (column_angle<0) column_angle+=NUMBER_OF_DEGREES;
   if (column_angle>NUMBER_OF_DEGREES-1) column_angle-=NUMBER_OF_DEGREES;
   l_angle=column_angle;
 
-  column_angle=atan((float)(prm_right-160) / VIEWER_DISTANCE)*(NUMBER_OF_DEGREES/6.28);
+  column_angle=static_cast<int>( atanf( static_cast<float>(prm_right-160) / VIEWER_DISTANCE)*(NUMBER_OF_DEGREES/6.28f) );
   if (column_angle<0) column_angle+=NUMBER_OF_DEGREES;
   if (column_angle>NUMBER_OF_DEGREES-1) column_angle-=NUMBER_OF_DEGREES;
   r_angle=column_angle;
