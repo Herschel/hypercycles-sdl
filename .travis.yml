@@ -1,0 +1,42 @@
+language: cpp
+
+install:
+  # Download and unzip premake 5.
+  # -L flag is important to follow HTTP 301 redirect.
+  - curl -fsSOL https://github.com/premake/premake-core/releases/download/v5.0.0-alpha12/$PREMAKE_FILE &&
+    tar -xzf $PREMAKE_FILE
+
+matrix:
+  include:
+    - os: linux
+      env:
+        - PREMAKE_FILE=premake-5.0.0-alpha12-linux.tar.gz
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test 
+          packages:
+            - g++-7
+            - libsdl2-dev
+            - libsdl2-mixer-dev
+
+    # works on Precise and Trusty
+    - os: osx
+      osx_image: xcode10
+      env:
+        - PREMAKE_FILE=premake-5.0.0-alpha12-macosx.tar.gz
+        - MATRIX_EVAL=""
+      addons:
+        homebrew:
+          packages:
+            - SDL2
+            - SDL2_mixer
+
+before_script:
+  # Build the makefile using premake.
+  - ./premake5 gmake2
+ 
+script:
+  - eval "${MATRIX_EVAL}" # Use GCC v7
+  - make

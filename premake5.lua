@@ -14,6 +14,7 @@
 -- along with this program. If not, see <http://www.gnu.org/licenses/>.
 workspace "hypercycles"
   language "C++"
+  cppdialect "C++17"
   configurations { "debug", "release" }
   if os.target() == "windows" then
     platforms { "win64" }
@@ -47,6 +48,9 @@ workspace "hypercycles"
     libdirs { "/usr/local/lib" }
     includedirs { "/usr/local/include/SDL2" }
     links { "SDL2", "SDL2_mixer" }
+    -- TODO(mike): The trig tables in trig.cpp are encoded as hex constants,
+    -- which GCC warns about.
+    disablewarnings { "narrowing", "c++11-narrowing" }
 
   filter "platforms:linux"
     system "linux"
@@ -54,7 +58,7 @@ workspace "hypercycles"
     links { "SDL2", "SDL2_mixer" }
     -- TODO(mike): The trig tables in trig.cpp are encoded as hex constants,
     -- which GCC warns about.
-    disablewarnings "narrowing"
+    disablewarnings { "narrowing", "c++11-narrowing" }
 
   project "hypercycles"
     kind "ConsoleApp"
