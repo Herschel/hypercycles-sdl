@@ -2549,15 +2549,11 @@ int Load_World(char *file, char *wptr[64])
   // open the file
   //fp = fopen(file,"r");
   
-  if(!ADT_FLAG) fp = fopen(file,"r" );
-  else 
-  {
-    GFLTEXT=1;
-    open_adt1(file);
-    GFLTEXT=0;
-    fp=GFL1_FP;
-  }
-
+  GFLTEXT=1;
+  open_adt1(file);
+  GFLTEXT=0;
+  fp=GFL1_FP;
+  
   if(fp==NULL)
   {
       // return(0);

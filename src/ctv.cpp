@@ -715,8 +715,7 @@ void play_vox(char * fname)
   CTV_Halt(); 
   
  
-  if(!ADT_FLAG) fp = fopen(fname,"r");
-  else fp = open_adt2(fname);
+  fp = open_adt2(fname);
 
   if(fp == NULL) 
   {

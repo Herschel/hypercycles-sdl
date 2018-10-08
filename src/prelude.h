@@ -43,6 +43,8 @@ char* itoa(int, char*, int);
 char* strupr(char*);
 #endif
 
+char* strlower( char* );
+
 long filelen( FILE* );
 int getch( void );
 int kbhit( void );

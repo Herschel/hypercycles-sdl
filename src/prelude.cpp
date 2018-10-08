@@ -15,6 +15,7 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 #include "prelude.h"
+#include <ctype.h>
 #include <stdio.h>
 #include "SDL.h"
 
@@ -37,6 +38,18 @@ char* strupr(char* s)
     return s;
 }
 #endif
+
+// TODO(mike): Temporary to make loading work on case-sensitive platforms.
+// Temporary until ADT file loading code is cleaned up.
+char* strlower( char* s )
+{
+	while( *s != 0 )
+	{
+		*s = tolower( *s );
+		s++;
+	}
+	return s;
+}
 
 long filelen( FILE* fd )
 {

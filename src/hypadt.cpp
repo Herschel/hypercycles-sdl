@@ -102,6 +102,15 @@ int open_adt1(char *fname)
 
   GFL1_FP = NULL;
   strcpy(fn2,fname);
+
+  extern int ADT_FLAG;
+  if( !ADT_FLAG )
+  {
+	  strlower( fn2 );
+	  GFL1_FP = fopen( fn2, GFLTEXT ? "r" : "rb" );
+	  return 1;
+  }
+
   strupr(fn2);
   
   for(a=0;a<135;a++)
@@ -145,6 +154,13 @@ FILE* open_adt2(char *fname)
 	int a, b = 0, start;
   char fn2[20];
   strcpy(fn2,fname);
+  extern int ADT_FLAG;
+  if( !ADT_FLAG )
+  {
+	  strlower( fn2 );
+	  return fopen( fn2, "r" );
+  }
+
   strupr(fn2);
   //printf("[[%s]]\n",fn2);
   for(a=0;a<120;a++)

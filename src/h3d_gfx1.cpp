@@ -97,12 +97,8 @@ void PCX_Load(char *filename, int pic_num,int enable_palette)
   // open the file
   //fp = fopen(filename,"rb");
   
-  if(!ADT_FLAG) fp = fopen(filename,"rb" );
-  else 
-  {
-    open_adt1(filename);
-    fp=GFL1_FP;
-  }
+	open_adt1(filename);
+	fp=GFL1_FP;
   
   if(fp == NULL )
   {

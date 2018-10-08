@@ -111,8 +111,7 @@ UCHAR *Read_Midi_File (char* file_name)
    UCHAR *events, *c;
    long length;
 
-   if(!ADT_FLAG) file = fopen (file_name, "rb");
-   else file = open_adt2(file_name);
+   file = open_adt2(file_name);
    
    if (file == NULL) {
           printf ("Cannot open file %s \n", file_name);
