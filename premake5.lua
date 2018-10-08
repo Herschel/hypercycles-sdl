@@ -27,6 +27,8 @@ workspace "hypercycles"
   -- Must be set outside filter.
   systemversion "10.0.15063.0"
 
+  defines "PLATFORM=%{cfg.platform}"
+
   filter "configurations:debug"
     defines { "DEBUG" }
     symbols "On"
