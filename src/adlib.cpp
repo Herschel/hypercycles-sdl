@@ -67,7 +67,7 @@ void SetWaveSel( int i );
 /*
 -----------------------------------------------------------------
 */
-int MAX_VOLUME =0x7f;
+unsigned int MAX_VOLUME =0x7f;
 
 unsigned int genAddr;  /* addr. of sound chip, in DS, used by OUTCHIP.ASM */
 int         pitchRange;                     /* pitch variation, half-tone [+1,+12] */
@@ -910,7 +910,7 @@ unsigned int  SetFreq (int voice, int pitch, int bend, int keyOn)
           /* Do a pitch bend.
                  pitchRange is the maximum interval for a pitch bend.
                  'bend' is the amount of pitch bend. */
-          long n;
+          unsigned int n;
 
           /* Below, the maximum interval is calculated in terms of fnums, and
                  then a fraction of this is added to the base value (effNbr). */

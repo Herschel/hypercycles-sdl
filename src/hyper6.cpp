@@ -107,7 +107,7 @@ int mem_ok();
 
 void play_vox(char *fname);
 extern int CTV_voice_status;
-extern int MAX_VOLUME;
+extern unsigned int MAX_VOLUME;
 
 // T Y P E S ////////////////////////////////////////////////////////////////
 
