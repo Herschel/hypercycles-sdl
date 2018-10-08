@@ -54,7 +54,7 @@ void Timer(int clicks);
 void Create_Scale_Data(int scale, int *row);
 void Build_Tables(void);
 void Allocate_World(void);
-int Load_World(char *file,  char *wptr[64]);
+int Load_World(char *file, unsigned char *wptr[64]);
 void Wait_For_Vsync(void);
 void Draw_Ground(void);
 
@@ -398,7 +398,7 @@ char rings=0, rings_req=1, snd_ctr=0, music_ctr=0, rings_avail;
 char hyper_boot=0, cycle_load_flag=0, rings_load_flag=0, tex_load_flag=0, carrier_load_flag=0;
 char access_load_flag=0, wallpro_flag=1, wallpro_ctr=0, saucer_load_flag=0;
 char missile_load_flag=0, keystat_load_flag=0;
-char music_toggle=2, digi_flag=2, view_flag=0, controls=0,dead=0, ctrl_pressed=0;
+char music_toggle=2, digi_flag=2, view_flag=0, controls=0,dead=0, ctrl_pressed=0; // NOTE(mike): 2 = music/sound active?
 unsigned char music_cnt=4, psi=0, pause=0;
 char access_buf[44], rider_walls[38];
 int grid_dir, grid_curspeed, grid_setspeed, radar_unit=1,low_power_flag=0;
@@ -424,9 +424,10 @@ int demo_command=0;
 extern unsigned char red[257], green[257], blue[257];
 unsigned char red2[257], green2[257], blue2[257];
 
-char *world[WORLD_ROWS+5];       // pointer to matrix of cells that make up world of walls
-char *flrmap[WORLD_ROWS+5];      // pointer to matrix of cells that make up world of floor
-char *ceilmap[WORLD_ROWS+5];     // pointer to matrix of cells that make up world of ceiling
+// TODO(mike): The code expects char is unsigned. Replace with u8?
+unsigned char *world[WORLD_ROWS+5];       // pointer to matrix of cells that make up world of walls
+unsigned char *flrmap[WORLD_ROWS+5];      // pointer to matrix of cells that make up world of floor
+unsigned char *ceilmap[WORLD_ROWS+5];     // pointer to matrix of cells that make up world of ceiling
 
 unsigned char wall_ht_map[4150];  //4098
 
@@ -2531,21 +2532,21 @@ void Allocate_World(void)
   int index;      // allocate each row
   for (index=0; index<WORLD_ROWS; index++)
   {
-    world[index] = (char*)malloc(WORLD_COLUMNS+1);
-    flrmap[index] = (char*)malloc(WORLD_COLUMNS+1);
-    ceilmap[index] = (char*)malloc(WORLD_COLUMNS+1);
+    world[index] = static_cast<unsigned char*>( malloc(WORLD_COLUMNS+1) );
+    flrmap[index] = static_cast<unsigned char*>( malloc(WORLD_COLUMNS+1) );
+    ceilmap[index] = static_cast<unsigned char*>( malloc(WORLD_COLUMNS+1) );
   } // end for index
 } // end Allocate_World
 
 ////////////////////////////////////////////////////////////////////////////////
 
-int Load_World(char *file, char *wptr[64])
+int Load_World(char *file, unsigned char *wptr[64])
 {
   // this function opens the input file and loads the world data from it
 
   FILE  *fp;
   int row,column;
-  char ch;
+  unsigned char ch;
 
   // open the file
   //fp = fopen(file,"r");
@@ -2571,7 +2572,7 @@ int Load_World(char *file, char *wptr[64])
     {
         // NOTE(mike): Also filter out CRLF on non-Windows systems.
       while((ch = getc(fp))==10 || ch==13){} // filter out CR
-
+	  
       // translate character to integer
       if (ch == ' ') ch=0;
 
@@ -5971,7 +5972,10 @@ void doctor_ender1()
    PCX_Show_Image(163,95,136,picture[136].width); // eyes open
   }  
   
-  if(!digi_flag<2)  memcpy(vga_ram,double_buffer_l,prm_copy1);
+  // NOTE(mike): Weird if statement. Is this code intentional?
+  // if (!digi_flag<2) memcpy(vga_ram,double_buffer_l,prm_copy1);
+  // Rewrite as ==2 and investigate later.
+  if (digi_flag==2) memcpy(vga_ram,double_buffer_l,prm_copy1);
 
   PCX_Show_Image(160,100,131,picture[131].width);
   PCX_Show_Image(163,95,136,picture[136].width); // eyes open
@@ -6064,8 +6068,11 @@ void doctor_ender2()
    delay(150);
    PCX_Show_Image(163,95,136,picture[136].width); // eyes open
   }  
-  
-  if(!digi_flag<2)  memcpy(vga_ram,double_buffer_l,prm_copy1);
+
+  // NOTE(mike): Weird if statement. Is this code intentional?
+  // if (!digi_flag<2) memcpy(vga_ram,double_buffer_l,prm_copy1);
+  // Rewrite as ==2 and investigate later.
+  if(digi_flag==2)  memcpy(vga_ram,double_buffer_l,prm_copy1);
 
   PCX_Show_Image(160,100,131,picture[131].width);
   PCX_Show_Image(163,95,136,picture[136].width); // eyes open
