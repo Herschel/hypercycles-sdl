@@ -20,7 +20,7 @@
 
 int sdl_key;
 
-#ifdef __APPLE__
+#if PLATFORM != win64
 
 char* itoa(int value, char* str, int base)
 {

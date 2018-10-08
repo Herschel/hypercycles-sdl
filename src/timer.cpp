@@ -169,7 +169,7 @@ void SetClkRate( int count )
 	//printf("SetClkRate %d\n", count);
 }
 
-void StartTimeOut( unsigned int delay )
+void StartTimeOut( int delay )
 {
 	// MIKE:
   //_disable();

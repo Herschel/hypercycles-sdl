@@ -51,6 +51,9 @@ workspace "hypercycles"
     system "linux"
     includedirs { "/usr/include/SDL2", "/usr/include/SDL2_mixer" }
     links { "SDL2", "SDL2_mixer" }
+    -- TODO(mike): The trig tables in trig.cpp are encoded as hex constants,
+    -- which GCC warns about.
+    disablewarnings "narrowing"
 
   project "hypercycles"
     kind "ConsoleApp"

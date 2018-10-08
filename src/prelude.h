@@ -38,7 +38,7 @@ extern unsigned char red[257], green[257], blue[257];
 extern void New_Key_Int( void );
 extern int sdl_key;
 
-#ifdef __APPLE__
+#if PLATFORM != win64
 char* itoa(int, char*, int);
 char* strupr(char*);
 #endif
