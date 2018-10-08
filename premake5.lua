@@ -42,6 +42,9 @@ workspace "hypercycles"
   filter "platforms:win64"
     system "windows"
     architecture "x64"
+    -- Disable warnings over fopen_s, etc.
+    -- TODO(mike): Eventually removes this as I wrap most file I/O.
+    defines "_CRT_SECURE_NO_WARNINGS"
 
   filter "platforms:osx"
     system "macosx"
