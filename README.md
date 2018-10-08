@@ -1,6 +1,7 @@
 # hypercycles-sdl 
-![Hypercycles Title Screen](https://www.mobygames.com/images/shots/l/697354-hypercycles-dos-screenshot-the-game-s-title-screen.png)
+![Hypercycles Title Screen](https://www.mobygames.com/images/shots/l/697354-hypercycles-dos-screenshot-the-game-s-title-screen.png)<br/>
 ![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/9a798t07lc9sl5be?svg=true)
+![Travis Build Status](https://travis-ci.org/Herschel/hypercycles-sdl.svg?branch=master)
 
 A port of the 1995 DOS game [Hypercycles](https://www.mobygames.com/game/hypercycles) to modern platforms.
 
