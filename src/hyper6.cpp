@@ -472,7 +472,7 @@ void save_config()
 {
   FILE *fp;
   
-  fp = fopen("HYPER.CFG","wb+" );
+  fp = fopen("hyper.cfg","wb+" );
   if( fp != NULL )
   {
       fwrite( &hc_setup, sizeof( hc_setup ), 1, fp);
@@ -484,7 +484,7 @@ int load_config()
 {
   FILE *fp1;
   
-  fp1 = fopen("HYPER.CFG","rb" );
+  fp1 = fopen("hyper.cfg","rb" );
 
   // MIKE:
   return 1;
@@ -1838,10 +1838,10 @@ void load_object_def()
  
   strcpy(rider_walls,"abcdefghijklmnopqrstuv xyz");
   
-  if(!ADT_FLAG) fp1 = fopen("OBJECT.DEF","rb" );
+  if(!ADT_FLAG) fp1 = fopen("object.def","rb" );
   else 
   {
-    open_adt1("OBJECT.DEF");
+    open_adt1("object.def");
     fp1=GFL1_FP;
   }
 
@@ -2007,7 +2007,7 @@ void load_level_def()
   
   if(!ADT_FLAG) 
   {
-    fp = fopen("LEVEL.DEF","rb" );
+    fp = fopen("level.def","rb" );
 
     if( fp != NULL )
     {

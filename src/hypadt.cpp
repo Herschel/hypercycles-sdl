@@ -46,7 +46,7 @@ int adt1_init()
   int a,b;
   
   //if(!(fp1=fopen("HYPER1.ADT","rb"))) return(1);
-  if(!(fp1=fopen("HYPER1R.ADT","rb"))) return(1);
+  if(!(fp1=fopen("hyper1r.adt","rb"))) return(1);
   
   for(a=0;a<135;a++) 
   {
@@ -73,7 +73,7 @@ int adt2_init()
   int a,b;
   
   //if(!(fp1=fopen("HYPER2.ADT","rb"))) return(1);
-  if(!(fp1=fopen("HYPER2R.ADT","rb"))) return(1);
+  if(!(fp1=fopen("hyper2r.adt","rb"))) return(1);
   
   for(a=0;a<120;a++) 
   {
@@ -124,12 +124,12 @@ int open_adt1(char *fname)
   if(!GFLTEXT)
   {
     //GFL1_FP = fopen("HYPER1.ADT", "rb");
-    GFL1_FP = fopen("HYPER1R.ADT", "rb");
+    GFL1_FP = fopen("hyper1r.adt", "rb");
   }
   else
   {
     //GFL1_FP = fopen("HYPER1.ADT", "r");
-    GFL1_FP = fopen("HYPER1R.ADT", "r");
+    GFL1_FP = fopen("hyper1r.adt", "r");
   }
   if(GFL1_FP==NULL) return(-1);
   a=fseek( GFL1_FP, start, SEEK_SET);
@@ -163,7 +163,7 @@ FILE* open_adt2(char *fname)
   start = adt2[a].start;
   
   //fpf = open("HYPER2.ADT", O_RDONLY + O_BINARY);
-  fpf = fopen("HYPER2R.ADT", "rb");
+  fpf = fopen("hyper2r.adt", "rb");
   if(fpf==nullptr) return(nullptr);
   a=fseek( fpf, start, SEEK_SET);
   if(a<0) return(nullptr);
